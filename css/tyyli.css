@@ -1,0 +1,620 @@
+/* ============================================================
+   tyyli.css · Default-sivuston perusmalli
+   Sakky · HTML-perusteet · Oppitunti 5
+   ============================================================ */
+
+
+/* ============================================================
+  MUUTTUJAT
+   Määritellään kerran, käytetään var(--nimi). Vaihda nämä ensin:
+   koko sivusto vaihtuu, eikä muuta tarvitse koskea.
+   ============================================================ */
+:root {
+  /* Värit. KOKEILE: vaihda --vari-paa ja --vari-korostus, tallenna, katso koko sivu. */
+  --vari-paa:        #3A5696;   /* otsikot, linkit, header */
+  --vari-paa-tumma:  #22365F;   /* hover-tila, tummempi versio päävärista */
+  --vari-korostus:   #FDBC00;   /* painikkeet, nav, korostukset */
+  --vari-korostus-2: #FAE274;   /* vaalea korostus: mark, taustat */
+  --vari-tausta:     #F3EBE2;   /* sivun tausta */
+  --vari-pinta:      #FFFFFF;   /* kortit, main, lomakekentät */
+  --vari-teksti:     #111111;
+  --vari-teksti-2:   #585858;   /* toissijainen teksti: kuvatekstit, small */
+  --vari-viiva:      #DDD2C7;   /* reunat, taulukon viivat */
+  --vari-virhe:      #B00020;
+  --vari-ok:         #1B7F3B;
+
+  /* Fontit. KOKEILE: Google Fontsista yksi otsikoille, yksi tekstille (esimerkki 05). */
+  --fontti-teksti:   "Open Sans", Arial, sans-serif;
+  --fontti-otsikko:  var(--fontti-teksti);     /* sama fontti oletuksena; vaihda esim. "Oswald", Impact, sans-serif */
+  --fontti-koodi:    "JetBrains Mono", "Courier New", monospace;
+
+  /* Mitat. KOKEILE: --vali 0.5rem → tiivis, 1.5rem → ilmava. --kulma 0 → terävä, 12px → pehmeä. */
+  --leveys-max:      70rem;     /* sisällön enimmäisleveys, 1120 px */
+  --leveys-teksti:   65ch;      /* tekstipalstan enimmäisleveys, noin 65 merkkiä */
+  --vali:            1rem;      /* perusväli, 16 px */
+  --kulma:           4px;       /* pyöristys */
+  --varjo:           0 2px 8px rgb(0 0 0 / 8%);
+  --siirtyma:        150ms ease;  /* hover-animaatioiden kesto */
+}
+
+
+/* ============================================================
+   NOLLAUS JA PERUSASETUKSET
+   Selaimilla on omat oletustyylit (user agent stylesheet, oppitunti 1),
+   jotka eroavat hieman toisistaan. Nämä rivit tasoittavat erot.
+   ============================================================ */
+
+/* Leveys sisältää paddingin ja reunan. Ensimmäinen rivi jokaisessa projektissa. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;              /* 16 px; kunnioittaa käyttäjän selainasetusta. KOKEILE: 112.5% = 18 px pohjakoko. */
+  scroll-behavior: smooth;      /* ankkurilinkit vierittävät pehmeästi */
+  -webkit-text-size-adjust: 100%;  /* iOS ei suurenna tekstiä vaakatilassa omin päin */
+}
+
+body {
+  margin: 0;                    /* selaimen oletus on 8 px joka puolella */
+  min-height: 100vh;
+  font-family: var(--fontti-teksti);
+  font-size: 1rem;
+  line-height: 1.6;             /* KOKEILE: 1.0 vs 1.8. Tämä on tärkein yksittäinen luettavuusasetus. */
+  color: var(--vari-teksti);
+  background: var(--vari-tausta);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Kaikki media kutistuu säiliöönsä, ei koskaan vuoda yli */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Lomakekentät eivät oletuksena peri fonttia. Nyt perivät. */
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Piilotettu-attribuutti voittaa aina, vaikka elementille olisi display: flex */
+[hidden] {
+  display: none !important;     /* ainoa hyväksyttävä !important tässä tiedostossa */
+}
+
+
+/* ============================================================
+   TEKSTI
+   ============================================================ */
+
+/* Otsikot: yksi asteikko, 1.25-kerroin. KOKEILE: vaihda kerroin 1.5:een (2.5 / 1.75 / 1.25 → 3.4 / 2.25 / 1.5). */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--fontti-otsikko);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--vari-paa);
+  margin: 0 0 0.5em;            /* em: väli skaalautuu otsikon koon mukaan */
+  text-wrap: balance;           /* rivit tasapainoon, ei yhtä orpoa sanaa viimeiselle riville */
+}
+h1 { font-size: 2.5rem; }       /* 40 px */
+h2 { font-size: 2rem; }         /* 32 px */
+h3 { font-size: 1.5rem; }       /* 24 px */
+h4 { font-size: 1.25rem; }      /* 20 px */
+h5 { font-size: 1.125rem; }     /* 18 px */
+h6 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* Otsikkoa seuraava otsikko: pienempi väli, ne kuuluvat yhteen */
+h1 + h2, h2 + h3, h3 + h4 { margin-top: 0; }
+
+/* Lohkoelementtien pystyväli: alamarginaali kaikille, ei ylämarginaalia.
+   Yksi suunta = ennustettava. KOKEILE: var(--vali) → 2rem. */
+p, ul, ol, dl, table, figure, blockquote, pre, details, hr, form, address {
+  margin: 0 0 var(--vali);
+}
+
+/* Tekstipalsta ei saa olla koko näytön levyinen. KOKEILE: poista tämä sääntö ja lue pitkä kappale isolla näytöllä. */
+p, li, dd, blockquote, figcaption, address {
+  max-width: var(--leveys-teksti);
+}
+
+/* Korostukset: merkitys, ei vain ulkonäkö */
+strong, b { font-weight: 700; }
+em, i     { font-style: italic; }
+small     { font-size: 0.875em; color: var(--vari-teksti-2); }
+mark      { background: var(--vari-korostus-2); color: inherit; padding: 0 0.2em; }
+del       { text-decoration: line-through; color: var(--vari-teksti-2); }
+ins       { text-decoration: underline; text-decoration-color: var(--vari-ok); }
+s         { text-decoration: line-through; }
+u         { text-decoration: underline; text-underline-offset: 0.15em; }
+sub, sup  { font-size: 0.75em; line-height: 0; position: relative; }  /* line-height 0: ei venytä riviä */
+sub       { bottom: -0.25em; }
+sup       { top: -0.5em; }
+
+
+
+
+
+/* Aika, osoite, vaakaviiva, rivinvaihto */
+time    { font-variant-numeric: tabular-nums; }   /* numerot tasalevyisinä */
+address { font-style: normal; }                    /* selaimen oletus on kursiivi, harvoin haluttu */
+hr {
+  border: 0;
+  border-top: 2px solid var(--vari-viiva);
+  margin-block: calc(var(--vali) * 2);
+}
+
+
+/* ============================================================
+   LISTAT
+   ============================================================ */
+ul, ol {
+  padding-left: 1.5rem;         /* luettelomerkin tila. KOKEILE: 0 + list-style: none → valikkolista. */
+}
+li { margin-bottom: 0.25rem; }
+li > ul, li > ol { margin: 0.25rem 0 0; }   /* sisäkkäinen lista: ei isoa alamarginaalia */
+
+ul { list-style: disc; }        /* KOKEILE: square, circle, "– " (merkkijono), none */
+ol { list-style: decimal; }     /* KOKEILE: lower-alpha, upper-roman */
+li::marker { color: var(--vari-paa); }      /* vain luettelomerkin väri */
+
+
+/* ============================================================
+ LINKIT
+   ============================================================ */
+a {
+  color: var(--vari-paa);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition: color var(--siirtyma), text-decoration-color var(--siirtyma);
+}
+a:hover {
+  color: var(--vari-paa-tumma);
+  text-decoration-color: var(--vari-korostus);
+}
+/* Näppäimistöfokus: näkyvä kehys. Älä koskaan poista tätä ilman korvaavaa. */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid var(--vari-korostus);
+  outline-offset: 2px;
+  border-radius: var(--kulma);
+}
+a:visited { color: var(--vari-paa); }        /* KOKEILE: purple → näet, mitkä linkit olet avannut */
+a[href^="mailto:"]::before { content: "\2709\00A0"; }   /* ✉ ennen sähköpostilinkkiä. KOKEILE: poista. */
+a[href^="tel:"]::before    { content: "\260E\00A0"; }   /* ☎ */
+a[target="_blank"]::after  { content: "\00A0\2197"; font-size: 0.8em; }  /* ↗ ulkoinen linkki */
+
+
+/* ============================================================
+   MEDIA
+   ============================================================ */
+img { border-radius: var(--kulma); }        /* KOKEILE: 50% → pyöreä (neliökuvalla) */
+
+
+/* ============================================================
+  TAULUKOT
+   ============================================================ */
+table {
+  width: 100%;
+  border-collapse: collapse;    /* KOKEILE: separate + border-spacing: 4px → erilliset solut */
+  font-size: 0.95rem;
+  background: var(--vari-pinta);
+}
+caption {
+  text-align: left;
+  font-weight: 700;
+  color: var(--vari-teksti-2);
+  padding-bottom: 0.5rem;
+  caption-side: top;            /* KOKEILE: bottom */
+}
+th, td {
+  padding: 0.6rem 0.75rem;      /* KOKEILE: 0.25rem 0.5rem → tiivis taulukko */
+  border-bottom: 1px solid var(--vari-viiva);
+  text-align: left;
+  vertical-align: top;
+}
+thead th {
+  background: var(--vari-paa);
+  color: var(--vari-pinta);
+  position: sticky;             /* otsikkorivi pysyy näkyvissä pitkässä taulukossa */
+  top: 0;
+}
+tbody tr:nth-child(even) { background: var(--vari-tausta); }   /* raidoitus. KOKEILE: odd, 3n */
+tbody tr:hover { background: var(--vari-korostus-2); }          /* rivikorostus */
+tfoot { font-weight: 700; }
+th[scope="row"] { font-weight: 600; }
+td.numero, th.numero { text-align: right; font-variant-numeric: tabular-nums; }
+/* Leveä taulukko: kääri <div class="vieritys"> sisään, niin se vierii puhelimessa */
+.vieritys { overflow-x: auto; }
+
+
+/* ============================================================
+   8. LOMAKKEET
+   ============================================================ */
+form { display: grid; gap: var(--vali); max-width: 36rem; }
+fieldset {
+  border: 1px solid var(--vari-viiva);
+  border-radius: var(--kulma);
+  padding: var(--vali);
+  margin: 0;
+  min-width: 0;                 /* fieldset ei muuten kutistu kapealla näytöllä */
+}
+legend {
+  font-weight: 700;
+  color: var(--vari-paa);
+  padding-inline: 0.5rem;
+}
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+/* Pakollinen kenttä: tähti CSS:llä, kun label on <label class="pakollinen"> */
+label.pakollinen::after { content: " *"; color: var(--vari-virhe); }
+
+/* Tekstikentät ja valintalistat */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]),
+select,
+textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 2px solid var(--vari-viiva);
+  border-radius: var(--kulma);
+  background: var(--vari-pinta);
+  transition: border-color var(--siirtyma);
+}
+input:hover, select:hover, textarea:hover { border-color: var(--vari-teksti-2); }
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  border-color: var(--vari-paa);
+  outline-offset: 0;
+}
+textarea { min-height: 6rem; resize: vertical; }    /* KOKEILE: resize: none */
+::placeholder { color: var(--vari-teksti-2); opacity: 0.7; }
+
+/* Tilat: virhe näkyy vasta kun käyttäjä on koskenut kenttään */
+input:user-invalid, textarea:user-invalid, select:user-invalid { border-color: var(--vari-virhe); background: #FFF5F5; }
+input:user-valid { border-color: var(--vari-ok); }
+input:disabled, select:disabled, textarea:disabled, button:disabled { opacity: 0.5; cursor: not-allowed; }
+input:read-only { background: var(--vari-tausta); }
+
+/* Valintaruudut ja -napit: selaimen oma piirros, mutta oma väri */
+input[type="checkbox"], input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--vari-paa);      /* KOKEILE: vaihda --vari-korostus */
+  vertical-align: middle;
+  margin-right: 0.4rem;
+}
+/* Valinnan label samalle riville: <label class="valinta"><input type="checkbox"> Teksti</label> */
+label.valinta { display: flex; align-items: center; gap: 0.5rem; font-weight: 400; }
+
+input[type="range"] { width: 100%; accent-color: var(--vari-paa); }
+input[type="color"] { width: 3rem; height: 2.5rem; padding: 0.2rem; border: 2px solid var(--vari-viiva); border-radius: var(--kulma); }
+input[type="file"] { padding: 0.5rem 0; }
+input[type="file"]::file-selector-button {         /* "Valitse tiedosto" -nappi */
+  font: inherit; padding: 0.4rem 0.9rem; margin-right: 0.75rem;
+  border: 0; border-radius: var(--kulma); background: var(--vari-paa); color: var(--vari-pinta); cursor: pointer;
+}
+select { cursor: pointer; }
+select[multiple] { height: auto; }
+optgroup { font-weight: 700; }
+
+/* Painikkeet: button-elementti ja .nappi-luokka linkeille */
+button, .nappi, input[type="submit"], input[type="button"], input[type="reset"] {
+  display: inline-block;
+  font-weight: 700;
+  padding: 0.7rem 1.4rem;
+  border: 2px solid var(--vari-paa);
+  border-radius: var(--kulma);      /* KOKEILE: 999px → pilleri */
+  background: var(--vari-paa);
+  color: var(--vari-pinta);
+  text-decoration: none;
+  cursor: pointer;
+  line-height: 1.2;
+  transition: background var(--siirtyma), transform var(--siirtyma), box-shadow var(--siirtyma);
+}
+button:hover, .nappi:hover, input[type="submit"]:hover {
+  background: var(--vari-paa-tumma);
+  border-color: var(--vari-paa-tumma);
+  transform: translateY(-1px);      /* KOKEILE: scale(1.03) tai poista */
+  box-shadow: var(--varjo);
+}
+button:active, .nappi:active { transform: translateY(0); box-shadow: none; }
+/* Toissijainen painike: ääriviiva */
+button.toissijainen, .nappi.toissijainen, button[type="reset"] {
+  background: transparent;
+  color: var(--vari-paa);
+}
+button.toissijainen:hover, .nappi.toissijainen:hover, button[type="reset"]:hover {
+  background: var(--vari-paa);
+  color: var(--vari-pinta);
+}
+/* Korostettu painike: keltainen */
+button.korostus, .nappi.korostus { background: var(--vari-korostus); border-color: var(--vari-korostus); color: var(--vari-teksti); }
+button.korostus:hover, .nappi.korostus:hover { background: var(--vari-korostus-2); border-color: var(--vari-korostus-2); }
+
+/* Laskennalliset: output, progress, meter */
+output { font-weight: 700; color: var(--vari-paa); }
+progress, meter { width: 100%; height: 1rem; accent-color: var(--vari-paa); }
+
+
+/* ============================================================
+   9. INTERAKTIIVISET: details, summary, dialog
+   ============================================================ */
+details {
+  border: 1px solid var(--vari-viiva);
+  border-radius: var(--kulma);
+  padding: 0.5rem var(--vali);
+  background: var(--vari-pinta);
+}
+summary {
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--vari-paa);
+  list-style: none;                 /* oma kolmio ::before-pseudoelementillä */
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "\25B8";                 /* ▸ */
+  display: inline-block;
+  margin-right: 0.5rem;
+  transition: transform var(--siirtyma);
+}
+details[open] > summary::before { transform: rotate(90deg); }   /* ▸ kääntyy ▾ */
+details[open] > summary { margin-bottom: 0.5rem; }
+
+/* Modaali-ikkuna (avataan JavaScriptillä dialog.showModal(), tyyli on valmiina) */
+dialog {
+  border: 0;
+  border-radius: var(--kulma);
+  padding: calc(var(--vali) * 1.5);
+  max-width: min(90vw, 32rem);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 30%);
+}
+dialog::backdrop { background: rgb(0 0 0 / 50%); backdrop-filter: blur(2px); }
+
+
+/* ============================================================
+   10. SIVUN RUNKO
+   header, nav, main, aside, footer. Sisältö keskitetään yhteen palstaan,
+   taustat ulottuvat koko leveydelle.
+   ============================================================ */
+
+/* Keskitetty palsta: taustat koko leveydelle, sisältö keskelle.
+   padding-inline = vähintään --vali, isolla näytöllä (ikkuna - maksimileveys) / 2.
+   Näin header ja footer eivät tarvitse ylimääräistä kääre-diviä. */
+header, nav, body > footer {
+  padding-inline: max(var(--vali), calc((100% - var(--leveys-max)) / 2));
+}
+/* Huom: body > footer = vain sivun alatunniste. blockquote- tai article-elementin
+   sisäinen footer on eri asia eikä saa näitä tyylejä. */
+main, aside {
+  max-width: var(--leveys-max);
+  margin-inline: auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: var(--vali);
+  background: var(--vari-paa);
+  color: var(--vari-pinta);
+  border-top: 8px solid var(--vari-korostus);   /* KOKEILE: poista tai vaihda 2px */
+  padding-block: var(--vali);
+}
+header h1, header a { color: inherit; margin: 0; }
+header img {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+nav {
+  background: var(--vari-korostus);
+  position: sticky;             /* KOKEILE: static → nav vierii pois näkyvistä */
+  top: 0;
+  z-index: 10;
+}
+nav ul {
+  list-style: none;
+  display: flex;                /* KOKEILE: poista → pystylista */
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0.25rem 0;
+}
+nav li { margin: 0; max-width: none; }
+nav a {
+  display: block;               /* koko laatikko klikattava, ei vain teksti */
+  padding: 0.6rem 1rem;
+  color: var(--vari-teksti);
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: var(--kulma);
+  transition: background var(--siirtyma), color var(--siirtyma);
+}
+nav a:hover, nav a:focus-visible, nav a[aria-current="page"] {
+  background: var(--vari-teksti);
+  color: var(--vari-korostus);
+}
+nav a::before, nav a::after { content: none; }   /* ei ikoneita valikossa */
+
+main {
+  background: var(--vari-pinta);
+  padding: calc(var(--vali) * 2) var(--vali);
+  margin: calc(var(--vali) * 2) auto;
+  border-radius: var(--kulma);
+  box-shadow: var(--varjo);     /* KOKEILE: none */
+}
+section { margin-bottom: calc(var(--vali) * 2.5); }
+section:last-child { margin-bottom: 0; }
+article {
+  padding-bottom: var(--vali);
+  border-bottom: 1px solid var(--vari-viiva);
+  margin-bottom: var(--vali);
+}
+article:last-child { border-bottom: 0; }
+article h2, article h3 { margin-top: 0; }
+aside {
+  background: var(--vari-korostus-2);
+  padding: var(--vali);
+  border-radius: var(--kulma);
+  border-left: 6px solid var(--vari-korostus);
+  margin: var(--vali) auto;
+}
+main aside { margin-inline: 0; }   /* mainin sisällä aside on tavallinen lohko */
+body > footer {
+  background: var(--vari-teksti);
+  color: var(--vari-tausta);
+  padding-block: calc(var(--vali) * 1.5);
+  font-size: 0.9rem;
+}
+body > footer a { color: var(--vari-korostus); }
+body > footer small { color: inherit; }
+body > footer p { max-width: none; }
+
+
+/* ============================================================
+   11. APULUOKAT
+   Pieniä yleiskäyttöisiä luokkia, joita lisätään HTML:ään tarpeen mukaan.
+   ============================================================ */
+
+/* Kortti ja korttiruudukko (esimerkki 09) */
+.kortti {
+  background: var(--vari-pinta);
+  border: 1px solid var(--vari-viiva);
+  border-top: 6px solid var(--vari-korostus);
+  border-radius: var(--kulma);
+  padding: var(--vali);
+  box-shadow: var(--varjo);
+}
+.kortit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));   /* KOKEILE: 12rem, 20rem */
+  gap: var(--vali);
+}
+.kortti > :last-child { margin-bottom: 0; }
+
+/* Ilmoituslaatikot: <p class="ilmoitus info">…</p> */
+.ilmoitus { padding: 0.75rem var(--vali); border-left: 6px solid; border-radius: var(--kulma); max-width: none; }
+.ilmoitus.info      { background: #E7F1FB; border-color: var(--vari-paa); }
+.ilmoitus.ok        { background: #E5F4E4; border-color: var(--vari-ok); }
+.ilmoitus.varoitus  { background: var(--vari-korostus-2); border-color: var(--vari-korostus); }
+.ilmoitus.virhe     { background: #FBEBEB; border-color: var(--vari-virhe); }
+
+/* Tunniste / pilleri: <span class="tunniste">HTML</span> */
+.tunniste {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  background: var(--vari-korostus-2);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+/* Näkyvissä vain ruudunlukijalle (esim. ohitelinkki, taulukon piilotettu otsikko) */
+.vain-ruudunlukija {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Ohitelinkki: ensimmäinen elementti bodyssa, näkyy vain Tab-näppäimellä */
+.ohita {
+  position: absolute; top: -100%; left: var(--vali);
+  background: var(--vari-korostus); color: var(--vari-teksti);
+  padding: 0.5rem 1rem; z-index: 100; text-decoration: none; font-weight: 700;
+}
+.ohita:focus { top: var(--vali); }
+
+/* Tekstin tasaus ja leveys */
+.keskitetty { text-align: center; margin-inline: auto; }
+.kapea      { max-width: var(--leveys-teksti); margin-inline: auto; }
+.levea      { max-width: none; }
+
+
+/* ============================================================
+   12. RESPONSIIVISUUS
+   Mobile first: kaikki yllä oleva on puhelimen tyyli. Täällä vain se,
+   mikä muuttuu isommalla näytöllä. KOKEILE: vaihda raja 48em → 30em tai 70em.
+   ============================================================ */
+@media (min-width: 48em) {      /* 768 px */
+  h1 { font-size: 3rem; }
+  h2 { font-size: 2.25rem; }
+  main { padding: calc(var(--vali) * 3); }
+  header img { width: 96px; height: 96px; }
+  form.kaksi-palstaa { grid-template-columns: 1fr 1fr; }       /* <form class="kaksi-palstaa"> */
+  form.kaksi-palstaa .koko-rivi { grid-column: 1 / -1; }
+}
+
+/* Käyttäjä on pyytänyt vähemmän liikettä */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* Kosketusnäyttö: ei hoveria, isommat painikkeet */
+@media (hover: none) {
+  button, .nappi, nav a { padding-block: 0.85rem; }
+}
+
+
+/* ============================================================
+   13. TULOSTUS
+   Ctrl+P → esikatselu näyttää tämän.
+   ============================================================ */
+@media print {
+  nav, body > footer, aside, button, .nappi, video, audio, iframe { display: none; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  main { box-shadow: none; margin: 0; padding: 0; max-width: none; }
+  a { color: #000; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; }   /* osoite näkyviin paperilla */
+  h2, h3 { break-after: avoid; }      /* otsikko ei jää sivun viimeiseksi riviksi */
+  table, figure, pre { break-inside: avoid; }
+}
+
+
+/* ============================================================
+   14. TUMMA TILA
+   Vain muuttujat vaihtuvat. KOKEILE: DevTools → Rendering → Emulate prefers-color-scheme: dark.
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vari-tausta:    #15181F;
+    --vari-pinta:     #1F232C;
+    --vari-teksti:    #F3EBE2;
+    --vari-teksti-2:  #B8B2A9;
+    --vari-viiva:     #3A3F4A;
+    --vari-paa:       #8FA8E0;    /* vaaleampi, jotta kontrasti riittää tummalla */
+    --vari-paa-tumma: #B3C4EC;
+    --varjo:          0 2px 8px rgb(0 0 0 / 40%);
+  }
+  header { background: #22365F; }
+  body > footer { background: #0D0F14; }
+  code   { background: #3A3F4A; color: var(--vari-korostus-2); }
+  pre    { background: #0D0F14; }
+  thead th { background: #22365F; }
+  aside  { background: #2A2F3A; }
+  .ilmoitus.info { background: #1E2A3F; }
+  .ilmoitus.ok { background: #1B2E1E; }
+  .ilmoitus.varoitus { background: #3A3214; }
+  .ilmoitus.virhe { background: #3A1A1E; }
+  img, video { filter: brightness(0.9); }
+  input:user-invalid, textarea:user-invalid { background: #3A1A1E; }
+}
+
+
+/* ============================================================
+   15. ===== OMAT TYYLIT =====
+   Kirjoita omat lisäyksesi tämän rivin alle. Opettajan päivitykset
+   tulevat yllä oleviin osioihin, joten Sync fork ei tuota ristiriitoja,
+   kun omat säännöt ovat täällä.
+   ============================================================ */
