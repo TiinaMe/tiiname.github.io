@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSS-esimerkit – Default sivu</title>
+  <link rel="stylesheet" href="../css/tyyli.css">
+</head>
+<body>
+<header>
+  <a href="../index.html"><img src="../img/sakky.jpg" alt="Logo" width="100" height="100"></a>
+  <h1>CSS-esimerkit</h1>
+</header>
+<nav>
+  <ul>
+    <li><a href="../index.html">Etusivu</a></li>
+    <li><a href="index.html" aria-current="page">CSS-esimerkit</a></li>
+  </ul>
+</nav>
+<main>
+  <p>Jokainen esimerkki on itsenäinen sivu, jossa CSS on <code>&lt;style&gt;</code>-lohkossa heti HTML:n vieressä.
+  Avaa sivu, paina <kbd>Ctrl+U</kbd> ja lue koodi ja kommentit rinnakkain. Kokeile muuttaa arvoja DevToolsissa (F12 → Elements → Styles).</p>
+
+  <section>
+    <h2>Aloita tästä</h2>
+    <p><a href="00-kaikki-elementit.html"><strong>00 · Kaikki elementit</strong></a> – jokainen HTML-elementti yhdellä sivulla ilman omaa CSS:ää. Avaa <code>css/tyyli.css</code> viereen, etsi <code>KOKEILE</code>-kommentit ja tee sivun kymmenen kokeilua. Tämä on nopein tapa nähdä, mitä mikäkin asetus tekee.</p>
+  </section>
+
+  <section>
+    <h2>Perusteet (diat 3–17)</h2>
+    <ol>
+      <li><a href="01-kolme-tapaa.html">Kolme tapaa liittää CSS</a> – inline, style-lohko, ulkoinen tiedosto</li>
+      <li><a href="02-valitsimet.html">Valitsimet</a> – elementti, luokka, id, jälkeläinen, pseudoluokat, attribuutti</li>
+      <li><a href="03-kaskadi.html">Kaskadi, spesifisyys ja periytyminen</a> – kumpi sääntö voittaa?</li>
+      <li><a href="04-laatikkomalli.html">Laatikkomalli</a> – content, padding, border, margin, box-sizing</li>
+      <li><a href="05-varit-ja-teksti.html">Värit, yksiköt ja typografia</a> – hex, rgb, hsl, rem, em, %, Google Fonts</li>
+      <li><a href="06-flexbox.html">Flexbox</a> – rivi, keskitys, väli, rivitys</li>
+      <li><a href="07-grid.html">Grid</a> – sivupohja ja ruudukko</li>
+      <li><a href="08-responsiivinen.html">Responsiivisuus</a> – media queryt, clamp(), mobile first</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Toteutusmallit (diat 18–22)</h2>
+    <ol start="9">
+      <li><a href="09-korttiruudukko.html">Korttiruudukko hover-efektillä</a> – projektit, tuotteet, joukkueet</li>
+      <li><a href="10-hero-ja-sticky-nav.html">Hero-alue ja kiinnittyvä navigointi</a> – etusivun näyttävä alku</li>
+      <li><a href="11-tumma-tila.html">Tumma tila CSS-muuttujilla</a> – prefers-color-scheme</li>
+      <li><a href="12-lomake-ja-taulukko.html">Tyylitelty lomake ja taulukko</a> – focus, raidoitus, mobiilitaulukko</li>
+      <li><a href="13-vaihtuva-hero.html">Vaihtuva hero: kuva ja video</a> – @keyframes-ristihäivytys, taustavideo, :has(:checked)-valitsin</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Luentoesimerkit</h2>
+    <ol start="14">
+      <li><a href="14-kolme-korttia.html">Kolme korttia flexillä</a> – oma pieni CSS-tiedosto ilman muuttujia: säiliö, kortti, kuva, nappi. Ei tyyli.css:ää.</li>
+      <li><a href="15-polut-ja-kansiot.html">Kansiot ja polut</a> – miten HTML, CSS ja kuvat löytävät toisensa eri kansiotasoilta: kaavio, taulukko, yleiset virheet</li>
+      <li><a href="16-katoava-kortti.html">Katoava kortti</a> – klikkaus käynnistää @keyframes-animaation ilman JavaScriptiä: label + checkbox + :has(:checked), perspective, forwards, reset-nappi, alta paljastuva kortti (grid-area 1/1)</li>
+      <li><a href="17-erikokoiset-kortit.html">Erikokoiset kortit</a> – sama rivi 7 kertaa, ainoa ero <code>align-items</code>: stretch (oletus) vs flex-start / center / flex-end, align-self, margin-top: auto, grid</li>
+    </ol>
+  </section>
+</main>
+<footer>
+  <div class="alatunniste-tiedot">
+    <p><small>Sakky · HTML-perusteet · Oppitunti 5: CSS-perusteet</small></p>
+  </div>
+</footer>
+</body>
+</html>

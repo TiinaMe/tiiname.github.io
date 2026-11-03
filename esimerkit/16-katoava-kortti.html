@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>16 · Katoava kortti</title>
+  <link rel="stylesheet" href="16-katoava-kortti.css">
+</head>
+<body>
+
+<h1>Katoava kortti</h1>
+<p>Klikkaa korttia: se nousee, kääntyy ja häipyy. Ei riviäkään JavaScriptiä. Avaa <code>16-katoava-kortti.css</code> viereen.</p>
+
+<!-- form + type="reset" palauttaa checkboxit alkutilaan ilman JavaScriptiä -->
+<form>
+  <div class="kortit">
+
+    <label class="kortti">
+      <input type="checkbox">
+      <h2>Tehtävä 1</h2>
+      <p>Lue CSS-tiedosto ja etsi, missä kohtaa animaatio käynnistyy.</p>
+    </label>
+
+    <label class="kortti">
+      <input type="checkbox">
+      <h2>Tehtävä 2</h2>
+      <p>Muuta <code>rotateX</code> → <code>rotateY</code>. Mihin suuntaan kortti nyt kääntyy?</p>
+    </label>
+
+    <label class="kortti">
+      <input type="checkbox">
+      <h2>Tehtävä 3</h2>
+      <p>Vaihda <code>forwards</code> → <code>none</code>. Miksi kortti palaa takaisin?</p>
+    </label>
+
+    <!-- Pino: kaksi korttia päällekkäin, alempi paljastuu kun ylempi klikataan pois -->
+    <div class="pino">
+      <label class="kortti paalla">
+        <input type="checkbox">
+        <h2>Tehtävä 4</h2>
+        <p>Tämän alla on jotain. Klikkaa.</p>
+      </label>
+      <label class="kortti alla">
+        <input type="checkbox">
+        <h2>Bonus</h2>
+        <p>Olin piilossa <code>grid-area: 1 / 1</code> -solussa ylemmän takana. Klikkaa minutkin pois.</p>
+      </label>
+    </div>
+
+  </div>
+  <button type="reset">Palauta kortit</button>
+</form>
+
+<h2>Miten tämä toimii</h2>
+<ol>
+  <li>Kortti on <code>&lt;label&gt;</code>, jonka sisällä on piilotettu <code>&lt;input type="checkbox"&gt;</code>. Klikkaus mihin tahansa labelin alueelle ruksaa checkboxin. Tämä on CSS:n ainoa tapa muistaa "tätä on klikattu".</li>
+  <li><code>.kortti:has(input:checked)</code> valitsee kortin, jonka sisällä on ruksattu checkbox, ja antaa sille <code>animation: lahde 0.6s ease-in forwards</code>.</li>
+  <li><code>@keyframes lahde</code> kuvaa matkan: nousu (<code>translateY</code>), kääntö (<code>rotateX</code>) ja häivytys (<code>opacity</code>). <code>forwards</code> jättää kortin loppuasentoon, muuten se hyppäisi takaisin.</li>
+  <li>Säiliön <code>perspective: 800px</code> tekee käännöstä kolmiulotteisen. Ilman sitä kortti vain litistyy.</li>
+  <li>Kun animaatio on ohi, <code>transition</code> 0.6 s viiveellä kutistaa kortin leveyden nollaan, jolloin muut kortit liukuvat sen paikalle.</li>
+  <li><strong>Pino:</strong> kaksi korttia <code>display: grid</code> -säiliössä, molemmat <code>grid-area: 1 / 1</code> eli samassa solussa päällekkäin. <code>z-index</code> päättää, kumpi on päällä. Alempi on <code>opacity: 0; transform: scale(0.9)</code>, ja <code>.pino:has(.paalla input:checked) .alla</code> tuo sen esiin transitionilla, joka alkaa 0,3 s viiveellä, kun päällinen on jo matkalla.</li>
+  <li><code>&lt;button type="reset"&gt;</code> lomakkeen sisällä tyhjentää checkboxit: kortit palaavat, koska <code>:has(:checked)</code> ei enää osu.</li>
+</ol>
+
+<h2>Kokeile</h2>
+<ul>
+  <li><code>rotateX(90deg)</code> → <code>rotateY(90deg)</code>, <code>rotate(20deg)</code> tai <code>scale(0)</code>.</li>
+  <li><code>ease-in</code> → <code>cubic-bezier(0.6, -0.5, 0.8, 1)</code>: kortti "ottaa vauhtia" alaspäin ennen lähtöä.</li>
+  <li>Poista säiliön <code>perspective</code>.</li>
+  <li>Pinossa: vaihda alemman <code>scale(0.9)</code> → <code>translateY(40px)</code> tai <code>rotate(-6deg)</code>. Lisää pinoon kolmas kortti.</li>
+  <li>Poista kohdan 3 jälkimmäinen <code>.kortti:has(input:checked)</code>-sääntö: kortti katoaa, mutta jättää tyhjän paikan.</li>
+  <li>Kokeile käyttöjärjestelmän "vähennä liikettä" -asetusta (Windows: Asetukset → Helppokäyttötoiminnot → Visuaaliset tehosteet → Animaatiotehosteet pois).</li>
+</ul>
+
+<p>JavaScript-kurssilla sama tehdään <code>element.classList.add("pois")</code>-kutsulla, ja silloin kortin voi myös poistaa DOM:ista kokonaan <code>animationend</code>-tapahtuman jälkeen.</p>
+
+<p><a href="index.html">← Kaikki esimerkit</a></p>
+
+</body>
+</html>

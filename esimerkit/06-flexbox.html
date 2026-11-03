@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 · Flexbox</title>
+  <link rel="stylesheet" href="../css/tyyli.css">
+  <style>
+    .demo { border: 1px solid #DDD2C7; padding: 1rem; margin-bottom: 1.5rem; background: #fff; }
+    .demo pre { margin-top: 0.75rem; }
+
+    /* Yhteinen ulkoasu laatikoille, jotta flexin vaikutus näkyy */
+    .flex { border: 2px dashed #3A5696; padding: 0.5rem; min-height: 60px; }
+    .flex > * { background: #FDBC00; padding: 0.75rem 1rem; border: 1px solid #585858; margin: 0; }
+
+    /* 1. display: flex → lapset riviin. Siinä kaikki. */
+    .f1 { display: flex; }
+
+    /* 2. gap: väli lasten väliin ilman marginaaleja */
+    .f2 { display: flex; gap: 1rem; }
+
+    /* 3. justify-content: jako PÄÄAKSELILLA (vaakasuunnassa rivissä) */
+    .f3a { display: flex; gap: 0.5rem; justify-content: flex-start; }    /* oletus: alkuun */
+    .f3b { display: flex; gap: 0.5rem; justify-content: center; }
+    .f3c { display: flex; gap: 0.5rem; justify-content: space-between; } /* reunoihin, tasaväli */
+    .f3d { display: flex; gap: 0.5rem; justify-content: flex-end; }
+
+    /* 4. align-items: tasaus POIKKIAKSELILLA (pystysuunnassa rivissä) */
+    .f4 { display: flex; gap: 0.5rem; height: 120px; }
+    .f4a { align-items: stretch; }     /* oletus: venyy koko korkeuteen */
+    .f4b { align-items: center; }
+    .f4c { align-items: flex-end; }
+
+    /* 5. Täydellinen keskitys: kaksi riviä */
+    .f5 { display: flex; justify-content: center; align-items: center; height: 120px; }
+
+    /* 6. flex: 1 → lapsi täyttää vapaan tilan. flex: 2 → kaksi kertaa enemmän. */
+    .f6 { display: flex; gap: 0.5rem; }
+    .f6 .kasvaa { flex: 1; }
+    .f6 .kasvaa-2 { flex: 2; }
+
+    /* 7. flex-wrap: rivitys, kun ei mahdu. Kavenna ikkunaa. */
+    .f7 { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .f7 > * { flex: 1 1 150px; }   /* kasva, kutistu, lähtöleveys 150 px → responsiivinen ilman media queryä */
+
+    /* 8. flex-direction: column → pystysuuntaan. Pääakseli kääntyy. */
+    .f8 { display: flex; flex-direction: column; gap: 0.5rem; width: 200px; }
+
+    /* 9. Käytännön malli: header, jossa logo vasemmalla ja valikko oikealla */
+    .f9 { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: #3A5696; color: #fff; padding: 0.75rem 1rem; }
+    .f9 > * { background: none; border: none; padding: 0; }
+    .f9 ul { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+    .f9 a { color: #FAE274; text-decoration: none; font-weight: 600; }
+    .f9 .logo { font-weight: 700; font-size: 1.25rem; }
+
+    /* 10. margin-left: auto flex-lapsessa → työntää itsensä oikeaan reunaan */
+    .f10 { display: flex; gap: 0.5rem; align-items: center; }
+    .f10 .oikealle { margin-left: auto; }
+  </style>
+</head>
+<body>
+<header>
+  <a href="../index.html"><img src="../img/sakky.jpg" alt="Logo" width="100" height="100"></a>
+  <h1>06 · Flexbox</h1>
+</header>
+<nav><ul><li><a href="index.html">Kaikki esimerkit</a></li><li><a href="05-varit-ja-teksti.html">← Edellinen</a></li><li><a href="07-grid.html">Seuraava →</a></li></ul></nav>
+
+<main>
+  <p>Flexbox asettelee <strong>yhden rivin tai sarakkeen</strong>. Säännöt annetaan <em>vanhemmalle</em> (säiliölle), ja lapset asettuvat sen mukaan. Avaa F12 → Elements: flex-säiliön vieressä on <strong>flex</strong>-merkki, josta saa apuviivat näkyviin.</p>
+
+  <div class="demo">
+    <h3>1 · display: flex</h3>
+    <div class="flex f1"><p>Yksi</p><p>Kaksi</p><p>Kolme</p></div>
+    <pre><code>.saili { display: flex; }   /* lapset riviin, ei muuta tarvita */</code></pre>
+  </div>
+
+  <div class="demo">
+    <h3>2 · gap</h3>
+    <div class="flex f2"><p>Yksi</p><p>Kaksi</p><p>Kolme</p></div>
+    <pre><code>.saili { display: flex; gap: 1rem; }</code></pre>
+  </div>
+
+  <div class="demo">
+    <h3>3 · justify-content: jako pääakselilla</h3>
+    <p>flex-start</p><div class="flex f3a"><p>A</p><p>B</p><p>C</p></div>
+    <p>center</p><div class="flex f3b"><p>A</p><p>B</p><p>C</p></div>
+    <p>space-between</p><div class="flex f3c"><p>A</p><p>B</p><p>C</p></div>
+    <p>flex-end</p><div class="flex f3d"><p>A</p><p>B</p><p>C</p></div>
+  </div>
+
+  <div class="demo">
+    <h3>4 · align-items: tasaus poikkiakselilla</h3>
+    <p>stretch (oletus)</p><div class="flex f4 f4a"><p>A</p><p>B</p></div>
+    <p>center</p><div class="flex f4 f4b"><p>A</p><p>B</p></div>
+    <p>flex-end</p><div class="flex f4 f4c"><p>A</p><p>B</p></div>
+  </div>
+
+  <div class="demo">
+    <h3>5 · Keskitys molempiin suuntiin</h3>
+    <div class="flex f5"><p>Keskellä</p></div>
+    <pre><code>.saili { display: flex; justify-content: center; align-items: center; }</code></pre>
+  </div>
+
+  <div class="demo">
+    <h3>6 · flex: 1 täyttää tilan</h3>
+    <div class="flex f6"><p>Kiinteä</p><p class="kasvaa">flex: 1</p><p class="kasvaa-2">flex: 2 (tuplasti)</p></div>
+  </div>
+
+  <div class="demo">
+    <h3>7 · flex-wrap + flex: 1 1 150px = responsiivinen ilman media queryä</h3>
+    <div class="flex f7"><p>Kortti 1</p><p>Kortti 2</p><p>Kortti 3</p><p>Kortti 4</p><p>Kortti 5</p></div>
+    <p>Kavenna ikkunaa: kortit rivittyvät, kun 150 px ei enää mahdu, ja täyttävät aina rivin.</p>
+  </div>
+
+  <div class="demo">
+    <h3>8 · flex-direction: column</h3>
+    <div class="flex f8"><p>Ylin</p><p>Keski</p><p>Alin</p></div>
+  </div>
+
+  <div class="demo">
+    <h3>9 · Käytännön malli: header</h3>
+    <div class="f9">
+      <span class="logo">Kiekkokerho</span>
+      <ul><li><a href="#">Etusivu</a></li><li><a href="#">Joukkueet</a></li><li><a href="#">Yhteys</a></li></ul>
+    </div>
+    <pre><code>header { display: flex; align-items: center; justify-content: space-between; }
+nav ul  { display: flex; gap: 1.5rem; list-style: none; }</code></pre>
+  </div>
+
+  <div class="demo">
+    <h3>10 · margin-left: auto työntää oikealle</h3>
+    <div class="flex f10"><p>Logo</p><p>Linkki</p><p class="oikealle">Kirjaudu →</p></div>
+  </div>
+
+  <section>
+    <h2>Muistilista</h2>
+    <table>
+      <thead><tr><th>Säiliölle</th><th>Tekee</th><th>Lapselle</th><th>Tekee</th></tr></thead>
+      <tbody>
+        <tr><td><code>display: flex</code></td><td>käynnistää</td><td><code>flex: 1</code></td><td>täyttää vapaan tilan</td></tr>
+        <tr><td><code>gap</code></td><td>väli</td><td><code>flex: 1 1 200px</code></td><td>kasva, kutistu, lähtökoko</td></tr>
+        <tr><td><code>justify-content</code></td><td>pääakseli</td><td><code>align-self</code></td><td>oma poikkitasaus</td></tr>
+        <tr><td><code>align-items</code></td><td>poikkiakseli</td><td><code>order</code></td><td>järjestys ilman HTML-muutosta</td></tr>
+        <tr><td><code>flex-wrap: wrap</code></td><td>rivitys</td><td><code>margin-left: auto</code></td><td>työntää reunaan</td></tr>
+        <tr><td><code>flex-direction</code></td><td>rivi / sarake</td><td></td><td></td></tr>
+      </tbody>
+    </table>
+    <p>Harjoituspeli: <a href="https://flexboxfroggy.com/#fi" target="_blank" rel="noopener">Flexbox Froggy</a> (suomeksi).</p>
+  </section>
+</main>
+<footer><div class="alatunniste-tiedot"><p><small>Sakky · CSS-perusteet · Esimerkki 06</small></p></div></footer>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>17 · Erikokoiset kortit: align-items</title>
+  <link rel="stylesheet" href="17-erikokoiset-kortit.css">
+</head>
+<body>
+
+<h1>Erikokoiset kortit: mikä päättää korkeuden?</h1>
+<p>Sama kolmen kortin rivi seitsemän kertaa. Korttien HTML ja CSS ovat identtiset. <strong>Ainoa ero on säiliön <code>align-items</code></strong> (ja kohdissa E–F yksi lisärivi). Katkoviiva on säiliön reuna.</p>
+
+<p><strong>Vastaus kysymykseen "miten kortit saadaan alkamaan yläreunasta":</strong> <code>.kortit { align-items: flex-start; }</code> (rivi B). Oletus on <code>stretch</code>, joka venyttää kaikki rivin kortit korkeimman mukaan, ja siksi ilman asetusta ne näyttävät samankorkuisilta.</p>
+
+    <p class="otsake">A · (ei asetusta) = align-items: stretch</p>
+    <div class="kortit a">
+      <div class="kortti">
+        <h2>Lyhyt</h2>
+        <p>Yksi rivi.</p>
+      </div>
+      <div class="kortti">
+        <h2>Keskipitkä</h2>
+        <p>Kaksi tai kolme riviä tekstiä, jotta kortti on selvästi korkeampi kuin ensimmäinen.</p>
+      </div>
+      <div class="kortti">
+        <h2>Pitkä</h2>
+        <p>Tämä kortti on pisin. Siinä on useampi kappale, jotta korkeusero näkyy varmasti.</p>
+        <p>Toinen kappale lisää korkeutta vielä muutaman rivin verran.</p>
+      </div>
+    </div>
+    <p class="otsake">B · align-items: flex-start</p>
+    <div class="kortit b">
+      <div class="kortti">
+        <h2>Lyhyt</h2>
+        <p>Yksi rivi.</p>
+      </div>
+      <div class="kortti">
+        <h2>Keskipitkä</h2>
+        <p>Kaksi tai kolme riviä tekstiä, jotta kortti on selvästi korkeampi kuin ensimmäinen.</p>
+      </div>
+      <div class="kortti">
+        <h2>Pitkä</h2>
+        <p>Tämä kortti on pisin. Siinä on useampi kappale, jotta korkeusero näkyy varmasti.</p>
+        <p>Toinen kappale lisää korkeutta vielä muutaman rivin verran.</p>
+      </div>
+    </div>
+    <p class="otsake">C · align-items: center</p>
+    <div class="kortit c">
+      <div class="kortti">
+        <h2>Lyhyt</h2>
+        <p>Yksi rivi.</p>
+      </div>
+      <div class="kortti">
+        <h2>Keskipitkä</h2>
+        <p>Kaksi tai kolme riviä tekstiä, jotta kortti on selvästi korkeampi kuin ensimmäinen.</p>
+      </div>
+      <div class="kortti">
+        <h2>Pitkä</h2>
+        <p>Tämä kortti on pisin. Siinä on useampi kappale, jotta korkeusero näkyy varmasti.</p>
+        <p>Toinen kappale lisää korkeutta vielä muutaman rivin verran.</p>
+      </div>
+    </div>
+    <p class="otsake">D · align-items: flex-end</p>
+    <div class="kortit d">
+      <div class="kortti">
+        <h2>Lyhyt</h2>
+        <p>Yksi rivi.</p>
+      </div>
+      <div class="kortti">
+        <h2>Keskipitkä</h2>
+        <p>Kaksi tai kolme riviä tekstiä, jotta kortti on selvästi korkeampi kuin ensimmäinen.</p>
+      </div>
+      <div class="kortti">
+        <h2>Pitkä</h2>
+        <p>Tämä kortti on pisin. Siinä on useampi kappale, jotta korkeusero näkyy varmasti.</p>
+        <p>Toinen kappale lisää korkeutta vielä muutaman rivin verran.</p>
+      </div>
+    </div>
+    <p class="otsake">E · align-items: flex-start + yhdellä kortilla align-self: stretch</p>
+    <div class="kortit e">
+      <div class="kortti">
+        <h2>Lyhyt</h2>
+        <p>Yksi rivi.</p>
+      </div>
+      <div class="kortti poikkeus">
+        <h2>Keskipitkä</h2>
+        <p>Kaksi tai kolme riviä tekstiä, jotta kortti on selvästi korkeampi kuin ensimmäinen.</p>
+      </div>
+      <div class="kortti">
+        <h2>Pitkä</h2>
+        <p>Tämä kortti on pisin. Siinä on useampi kappale, jotta korkeusero näkyy varmasti.</p>
+        <p>Toinen kappale lisää korkeutta vielä muutaman rivin verran.</p>
+      </div>
+    </div>
+    <p class="otsake">F · stretch + .kortti { display: flex; flex-direction: column } + a { margin-top: auto }</p>
+    <div class="kortit f">
+      <div class="kortti">
+        <h2>Lyhyt</h2>
+        <p>Yksi rivi.</p>
+        <a href="#">Lue lisää</a>
+      </div>
+      <div class="kortti">
+        <h2>Keskipitkä</h2>
+        <p>Kaksi tai kolme riviä tekstiä, jotta kortti on selvästi korkeampi kuin ensimmäinen.</p>
+        <a href="#">Lue lisää</a>
+      </div>
+      <div class="kortti">
+        <h2>Pitkä</h2>
+        <p>Tämä kortti on pisin. Siinä on useampi kappale, jotta korkeusero näkyy varmasti.</p>
+        <p>Toinen kappale lisää korkeutta vielä muutaman rivin verran.</p>
+        <a href="#">Lue lisää</a>
+      </div>
+    </div>
+    <p class="otsake">G · display: grid + align-items: start</p>
+    <div class="kortit g">
+      <div class="kortti">
+        <h2>Lyhyt</h2>
+        <p>Yksi rivi.</p>
+      </div>
+      <div class="kortti">
+        <h2>Keskipitkä</h2>
+        <p>Kaksi tai kolme riviä tekstiä, jotta kortti on selvästi korkeampi kuin ensimmäinen.</p>
+      </div>
+      <div class="kortti">
+        <h2>Pitkä</h2>
+        <p>Tämä kortti on pisin. Siinä on useampi kappale, jotta korkeusero näkyy varmasti.</p>
+        <p>Toinen kappale lisää korkeutta vielä muutaman rivin verran.</p>
+      </div>
+    </div>
+
+<h2>Muistisääntö</h2>
+<ul>
+  <li><code>justify-content</code> = pääakseli (rivissä vaaka): mihin kortit asettuvat vasen–oikea.</li>
+  <li><code>align-items</code> = poikkiakseli (rivissä pysty): mihin kortit asettuvat ylä–ala ja venyvätkö ne.</li>
+  <li><code>align-self</code> = sama yhdelle lapselle, voittaa säiliön <code>align-items</code>-asetuksen.</li>
+  <li>Gridissä arvot ovat <code>start / center / end / stretch</code> ilman <code>flex-</code>-etuliitettä.</li>
+</ul>
+
+<h2>Kumpi valita?</h2>
+<table border="1" cellpadding="6" style="border-collapse: collapse;">
+  <tr><th>Haluat</th><th>Käytä</th></tr>
+  <tr><td>Yläreunat tasan, kukin kortti oman sisältönsä korkuinen</td><td><code>align-items: flex-start</code></td></tr>
+  <tr><td>Kaikki kortit saman korkuisia ja napit samassa linjassa alhaalla</td><td>oletus <code>stretch</code> + kortissa <code>display: flex; flex-direction: column</code> + napissa <code>margin-top: auto</code></td></tr>
+  <tr><td>Yksi kortti poikkeaa muista</td><td><code>align-self</code> sille kortille</td></tr>
+</table>
+
+<h2>Kokeile</h2>
+<ul>
+  <li>Avaa F12 → Elements, valitse rivin A <code>.kortit</code> ja lisää Styles-paneeliin <code>align-items: flex-start</code>. Vaihda arvoa nuolinäppäimillä.</li>
+  <li>Kavenna ikkunaa, kunnes kortit rivittyvät. Huomaa: <code>align-items</code> toimii rivi kerrallaan, joten alemman rivin kortit tasautuvat omaan riviinsä.</li>
+  <li>Rivissä F poista <code>margin-top: auto</code>. Mihin napit menevät?</li>
+  <li>Kopioi rivin B pitkään korttiin kuusi <code>&lt;p&gt;</code>-kappaletta lisää. Rikkoutuuko seuraavien rivien järjestys? Ei: jokainen <code>.kortit</code> on tavallinen lohko, jonka korkeus kasvaa sisällön mukaan, ja seuraava alkaa siitä mihin edellinen päättyi. Flex vaikuttaa vain säiliön sisällä.</li>
+  <li>Lisää sitten <code>.kortit { height: 300px; }</code> ja katso uudestaan: nyt sisältö pursuaa säiliön yli seuraavan rivin päälle, koska <code>overflow</code> on oletuksena <code>visible</code>. Kiinteä <code>height</code> on yleisin syy "päällekkäin meneviin" elementteihin. Jos tarvitset vähimmäiskorkeuden, käytä <code>min-height</code>.</li>
+</ul>
+
+<p><a href="index.html">← Kaikki esimerkit</a></p>
+
+</body>
+</html>

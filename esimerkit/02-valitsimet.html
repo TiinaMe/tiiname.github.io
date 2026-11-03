@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02 · Valitsimet</title>
+  <link rel="stylesheet" href="../css/tyyli.css">
+  <style>
+    /* Demo-alueen yhteiset tyylit */
+    .demo { border: 1px solid #DDD2C7; padding: 1rem; margin-bottom: 1.5rem; background: #fff; }
+    .demo p, .demo li { margin: 0.25rem 0; }
+
+    /* 1. ELEMENTTIVALITSIN: kaikki tämän nimiset elementit */
+    .demo-1 p { background: #FAE274; }
+
+    /* 2. LUOKKAVALITSIN (.nimi): kaikki elementit, joilla on class="tarkea". Saa toistua. */
+    .tarkea { font-weight: 700; color: #B00020; }
+
+    /* 3. ID-VALITSIN (#nimi): täsmälleen yksi elementti sivulla. Käytä harvoin, mieluummin luokkia. */
+    #erikoinen { border: 3px double #3A5696; padding: 0.5rem; }
+
+    /* 4. JÄLKELÄISVALITSIN (välilyönti): kaikki li-elementit .demo-4:n sisällä, millä tasolla tahansa */
+    .demo-4 li { color: #3A5696; }
+
+    /* 5. LAPSIVALITSIN (>): vain suorat lapset. Sisäkkäisen listan li-elementit eivät saa tätä. */
+    .demo-5 > ul > li { font-weight: 700; }
+
+    /* 6. RYHMITTELY (pilkku): sama sääntö usealle valitsimelle */
+    .demo-6 h3, .demo-6 h4 { text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* 7. PSEUDOLUOKAT: elementin tila */
+    .demo-7 a:hover { background: #FDBC00; }                 /* hiiri päällä */
+    .demo-7 a:focus-visible { outline: 3px solid #3A5696; }  /* näppäimistöllä valittu */
+    .demo-7 li:first-child { font-weight: 700; }             /* ensimmäinen lapsi */
+    .demo-7 li:last-child { font-style: italic; }            /* viimeinen lapsi */
+    .demo-7 li:nth-child(even) { background: #F3EBE2; }      /* joka toinen */
+    .demo-7 input:focus { border-color: #3A5696; }           /* kenttä aktiivisena */
+    .demo-7 input:invalid { border-color: #B00020; }         /* kenttä virheellinen (esim. type=email) */
+
+    /* 8. ATTRIBUUTTIVALITSIN: elementit, joilla on tietty attribuutti tai arvo */
+    .demo-8 a[href^="https://"]::after { content: " ↗"; }    /* alkaa https:// → ulkoinen linkki */
+    .demo-8 a[href$=".pdf"]::after { content: " (PDF)"; }    /* päättyy .pdf */
+    .demo-8 input[type="checkbox"] { width: 1.25rem; height: 1.25rem; }
+
+    /* 9. PSEUDOELEMENTIT (::): osa elementistä tai luotu sisältö */
+    .demo-9 p::first-letter { font-size: 2em; font-weight: 700; color: #3A5696; }
+    .demo-9 h3::before { content: "§ "; color: #FDBC00; }
+
+    /* 10. YLEISVALITSIN (*): kaikki. Yleensä vain box-sizing-asetukseen. */
+    .demo-10 * { outline: 1px dotted #B00020; }
+  </style>
+</head>
+<body>
+<header>
+  <a href="../index.html"><img src="../img/sakky.jpg" alt="Logo" width="100" height="100"></a>
+  <h1>02 · Valitsimet</h1>
+</header>
+<nav><ul><li><a href="index.html">Kaikki esimerkit</a></li><li><a href="01-kolme-tapaa.html">← Edellinen</a></li><li><a href="03-kaskadi.html">Seuraava →</a></li></ul></nav>
+
+<main>
+  <p>Valitsin kertoo, mihin elementteihin sääntö osuu. Lue jokaisen laatikon kohdalla <kbd>Ctrl+U</kbd>-näkymästä, mikä sääntö tekee mitäkin.</p>
+
+  <div class="demo demo-1">
+    <h3>1 · Elementtivalitsin <code>p</code></h3>
+    <p>Kaikki tämän laatikon kappaleet ovat keltaisia.</p>
+    <p>Tämäkin.</p>
+    <span>Tämä span ei ole, koska se ei ole p.</span>
+  </div>
+
+  <div class="demo demo-2">
+    <h3>2 · Luokkavalitsin <code>.tarkea</code></h3>
+    <p>Tavallinen kappale.</p>
+    <p class="tarkea">Tällä on class="tarkea".</p>
+    <p>Luokka toimii myös <span class="tarkea">tekstin sisällä</span> ja missä tahansa elementissä.</p>
+  </div>
+
+  <div class="demo demo-3">
+    <h3>3 · Id-valitsin <code>#erikoinen</code></h3>
+    <p id="erikoinen">Sivulla saa olla vain yksi elementti tällä id:llä. Id on myös ankkurilinkin kohde (#erikoinen).</p>
+  </div>
+
+  <div class="demo demo-4">
+    <h3>4 · Jälkeläisvalitsin <code>.demo-4 li</code></h3>
+    <ul>
+      <li>Sininen</li>
+      <li>Sininen
+        <ul><li>Tämäkin on sininen, koska se on .demo-4:n sisällä (vaikka syvemmällä).</li></ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="demo demo-5">
+    <h3>5 · Lapsivalitsin <code>.demo-5 &gt; ul &gt; li</code></h3>
+    <ul>
+      <li>Lihavoitu (suora lapsi)</li>
+      <li>Lihavoitu
+        <ul><li>Ei lihavoitu: tämä on lapsenlapsi, ei lapsi.</li></ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="demo demo-6">
+    <h3>6 · Ryhmittely pilkulla</h3>
+    <h4>Tämäkin h4 saa saman säännön</h4>
+    <p>Yksi sääntö, kaksi valitsinta: <code>.demo-6 h3, .demo-6 h4 { … }</code></p>
+  </div>
+
+  <div class="demo demo-7">
+    <h3>7 · Pseudoluokat: tila</h3>
+    <ul>
+      <li>Ensimmäinen (first-child, lihavoitu)</li>
+      <li>Toinen (even, taustaväri)</li>
+      <li>Kolmas</li>
+      <li>Neljäs (even ja last-child: tausta ja kursiivi)</li>
+    </ul>
+    <p>Vie hiiri linkin päälle: <a href="#">hover-linkki</a>. Siirry Tab-näppäimellä: focus-visible näyttää kehyksen.</p>
+    <label for="sp">Sähköposti (kirjoita virheellinen, reuna punertuu):</label>
+    <input id="sp" type="email" placeholder="nimi@example.fi">
+  </div>
+
+  <div class="demo demo-8">
+    <h3>8 · Attribuuttivalitsin</h3>
+    <p><a href="https://developer.mozilla.org/fi/">Ulkoinen linkki saa nuolen</a> · <a href="ohje.pdf">PDF-linkki saa merkinnän</a> · <a href="index.html">tavallinen linkki</a></p>
+    <label><input type="checkbox"> Isompi valintaruutu attribuuttivalitsimella</label>
+  </div>
+
+  <div class="demo demo-9">
+    <h3>9 · Pseudoelementit ::first-letter ja ::before</h3>
+    <p>Ensimmäinen kirjain on iso ja sininen. Otsikon pykälämerkki on luotu CSS:llä, sitä ei ole HTML:ssä.</p>
+  </div>
+
+  <div class="demo demo-10">
+    <h3>10 · Yleisvalitsin <code>*</code></h3>
+    <p>Kaikki tämän laatikon elementit saavat pisteviivan. Hyvä <em>debug-temppu</em>: näet jokaisen laatikon rajat.</p>
+  </div>
+
+  <section>
+    <h2>Nyrkkisäännöt</h2>
+    <ul>
+      <li>Käytä <strong>luokkia</strong> lähes aina. Id:tä vain ankkureihin ja JavaScriptille.</li>
+      <li>Pidä valitsimet lyhyinä: <code>.kortti h3</code> riittää, <code>main section div.kortti h3</code> on hauras.</li>
+      <li>Nimeä luokka sen mukaan, <em>mikä</em> elementti on, ei miltä se näyttää: <code>.varoitus</code>, ei <code>.punainen</code>.</li>
+    </ul>
+  </section>
+</main>
+<footer><div class="alatunniste-tiedot"><p><small>Sakky · CSS-perusteet · Esimerkki 02</small></p></div></footer>
+</body>
+</html>

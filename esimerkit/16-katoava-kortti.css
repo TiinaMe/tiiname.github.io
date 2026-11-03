@@ -1,0 +1,151 @@
+/* ============================================================
+   16 · KATOAVA KORTTI – luentoesimerkki
+   Klikkaa korttia: se nousee, kääntyy ja häipyy pois. Ei JavaScriptiä.
+   Temppu: kortin sisällä on piilotettu checkbox, ja koko kortti on
+   sen <label>. Klikkaus ruksaa checkboxin → :checked → animaatio.
+   ============================================================ */
+
+
+/* 1. SÄILIÖ JA KORTTI (sama kuin esimerkissä 14, lyhennettynä)
+   ------------------------------------------------------------ */
+.kortit {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 24px;
+  perspective: 800px;     /* antaa 3D-käännölle syvyyden; kokeile 300px tai poista */
+}
+
+.kortti {
+  flex: 1 1 250px;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  cursor: pointer;        /* kerrotaan, että tätä voi klikata */
+  user-select: none;      /* tuplaklikkaus ei maalaa tekstiä */
+}
+
+.kortti h2 { margin: 0 0 8px 0; font-size: 20px; color: #3A5696; }
+.kortti p  { margin: 0; color: #444444; line-height: 1.5; }
+
+
+/* 2. PIILOTETTU CHECKBOX
+   ------------------------------------------------------------ */
+.kortti input {
+  position: absolute;     /* pois tilankäytöstä */
+  opacity: 0;             /* näkymätön, mutta toimii (näppäimistökin löytää) */
+  width: 0;
+  height: 0;
+}
+
+
+/* 3. ANIMAATIO: nouse, käänny, häivy
+   ------------------------------------------------------------ */
+@keyframes lahde {
+  0% {
+    transform: translateY(0) rotateX(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: translateY(-20px) rotateX(0deg);   /* pieni nousu ensin */
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-80px) rotateX(90deg);  /* kääntyy "lattiaan" ja katoaa */
+    opacity: 0;
+  }
+}
+
+/* Kun kortin checkbox on ruksattu, kortti saa animaation.
+   :has() katsoo kortin sisälle: "kortti, jonka sisällä on :checked". */
+.kortti:has(input:checked) {
+  animation: lahde 0.6s ease-in forwards;   /* forwards = jää loppuasentoon */
+  pointer-events: none;                     /* ei enää klikattavissa */
+}
+
+/* Kun animaatio on ohi, vapauta tila: kortti katoaa myös asettelusta.
+   Tämä tapahtuu transitionilla, joka alkaa vasta animaation jälkeen (delay 0.6s). */
+.kortti {
+  transition: flex-basis 0.4s 0.6s, padding 0.4s 0.6s, border-width 0.4s 0.6s, margin 0.4s 0.6s;
+  overflow: hidden;
+}
+.kortti:has(input:checked) {
+  flex-basis: 0;
+  flex-grow: 0;
+  padding: 0;
+  border-width: 0;
+  margin-left: -24px;     /* kumoaa gapin, jotta jäljelle jääneiden väli pysyy samana */
+}
+
+
+/* 3b. PINO: alta paljastuva kortti
+   ------------------------------------------------------------
+   Kaksi korttia samassa ruudukon solussa (grid-area: 1 / 1).
+   Päällimmäinen peittää alemman. Kun päällimmäisen checkbox
+   ruksataan, alempi häivytetään näkyviin. */
+.pino {
+  flex: 1 1 250px;        /* pino vie rivillä yhden kortin paikan */
+  display: grid;          /* grid, jossa on vain yksi solu... */
+}
+.pino > .kortti {
+  grid-area: 1 / 1;       /* ...ja molemmat kortit samassa solussa, päällekkäin */
+  flex: none;
+  margin: 0;              /* pinon sisällä ei käytetä kutistusta */
+}
+.pino .paalla { z-index: 2; }
+.pino .alla {
+  z-index: 1;
+  background-color: #FAE274;
+  border-color: #FDBC00;
+  opacity: 0;                      /* piilossa... */
+  transform: scale(0.9);           /* ...ja hieman pienempänä */
+  pointer-events: none;            /* ei klikattavissa, kun on piilossa */
+  transition: opacity 0.4s 0.3s, transform 0.4s 0.3s;   /* alkaa, kun päällinen on jo matkalla */
+}
+/* "pino, jonka päällisen checkbox on ruksattu" → näytä alempi */
+.pino:has(.paalla input:checked) .alla {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;            /* nyt tätäkin voi klikata pois */
+}
+.pino .kortti:has(input:checked) {
+  flex-basis: auto; padding: 16px; border-width: 1px;   /* kumoaa kohdan 3 kutistuksen pinon sisällä */
+}
+
+
+/* 4. HOVER-VIHJE ENNEN KLIKKAUSTA
+   ------------------------------------------------------------ */
+.kortti:hover:not(:has(input:checked)) {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+.kortti:has(input:focus-visible) {
+  outline: 3px solid #FDBC00;   /* näppäimistökäyttäjä näkee, missä on */
+}
+
+
+/* 5. PALAUTUSNAPPI
+   ------------------------------------------------------------ */
+button {
+  margin: 0 24px 24px;
+  padding: 8px 16px;
+  background-color: #3A5696;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+button:hover { background-color: #22365F; }
+
+
+/* 6. VÄHEMMÄN LIIKETTÄ: ei lentoa, pelkkä häivytys
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes lahde {
+    to { opacity: 0; }
+  }
+  .kortti { transition: none; }
+}

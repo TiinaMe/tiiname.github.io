@@ -1,0 +1,96 @@
+/* ============================================================
+   14 · KOLME KORTTIA – luentoesimerkki
+   Tässä tiedostossa on VAIN korttien säännöt. Ei muuttujia,
+   ei nollauksia, ei sivupohjaa: kaikki muu on selaimen oletusta.
+   Lue ylhäältä alas, jokainen sääntö kommentoitu.
+   ============================================================ */
+
+
+/* 1. SÄILIÖ: laittaa kortit vierekkäin
+   ------------------------------------------------------------ */
+.kortit {
+  display: flex;        /* lapset riviin */
+  gap: 24px;            /* väli korttien väliin */
+  flex-wrap: wrap;      /* kun ei mahdu, pudota seuraavalle riville */
+  padding: 24px;        /* tilaa säiliön reunoihin */
+}
+
+
+/* 2. KORTTI: yksi laatikko
+   ------------------------------------------------------------ */
+.kortti {
+  flex: 1 1 250px;      /* kasva, kutistu, lähtöleveys 250 px
+                           → 3 vierekkäin leveällä, 1 allekkain puhelimessa */
+
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 8px;   /* pyöristetyt kulmat */
+  overflow: hidden;     /* kuva ei vuoda pyöristyksen yli */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+
+  display: flex;
+  flex-direction: column; /* kortin sisältö pystysuuntaan: kuva, otsikko, teksti, nappi */
+}
+
+
+/* 3. KUVA: täyttää kortin leveyden, aina sama korkeus
+   ------------------------------------------------------------ */
+.kortti img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;    /* rajaa kuvan, ei venytä */
+  display: block;       /* poistaa kuvan alle jäävän pienen raon */
+}
+
+
+/* 4. TEKSTIOSA
+   ------------------------------------------------------------ */
+.kortti .sisalto {
+  padding: 16px;
+  flex-grow: 1;         /* venyy, jotta napit asettuvat kaikissa korteissa samaan kohtaan */
+  display: flex;
+  flex-direction: column;
+}
+
+.kortti h2 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  color: #3A5696;
+}
+
+.kortti p {
+  margin: 0 0 16px 0;
+  color: #444444;
+  line-height: 1.5;
+}
+
+
+/* 5. NAPPI: linkki, joka näyttää painikkeelta
+   ------------------------------------------------------------ */
+.kortti a {
+  margin-top: auto;     /* työntää napin kortin alareunaan */
+  align-self: flex-start; /* nappi vain tekstinsä levyinen, ei koko riviä */
+
+  padding: 8px 16px;
+  background-color: #3A5696;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.kortti a:hover {
+  background-color: #22365F;
+}
+
+
+/* 6. HOVER: kortti nousee hiiren alla
+   ------------------------------------------------------------ */
+.kortti {
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.kortti:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
