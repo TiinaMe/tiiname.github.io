@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 · Vaihtuva hero: kuva ja video</title>
+  <link rel="stylesheet" href="../css/tyyli.css">
+  <style>
+    /* ============================================================
+       TOTEUTUSMALLI: hero, jossa kuva ja video vuorottelevat
+       Tiedostot: img/icehockey.jpg ja img/icehockey_tuupelaa.mp4
+       (vaihda polut, jos tallensit ne muualle, esim. media/-kansioon).
+
+       Kaksi tapaa, molemmat ilman JavaScriptiä:
+       A) automaattinen ristihäivytys @keyframes-animaatiolla
+       B) käyttäjän valinta radio-napeilla ja :checked-pseudoluokalla
+       ============================================================ */
+
+    /* ---------- A. AUTOMAATTINEN VUOROTTELU ---------- */
+
+    .hero {
+      position: relative;            /* kerrokset pinotaan tämän sisään */
+      min-height: 70vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;              /* zoomaava kuva ei vuoda yli */
+      color: #fff;
+      text-align: center;
+      padding: 3rem 1.25rem;
+      background: #22365F;           /* näkyy, kunnes media on latautunut */
+    }
+
+    /* Molemmat mediat samaan kohtaan, koko alueen täyttäviksi */
+    .hero .media {
+      position: absolute;
+      inset: 0;                      /* = top:0; right:0; bottom:0; left:0 */
+      width: 100%;
+      height: 100%;
+      object-fit: cover;             /* täyttää rajaamalla, ei venytä */
+      z-index: 0;
+    }
+
+    /* Tummentava kerros, jotta valkoinen teksti on luettavaa millä kuvalla tahansa */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgb(58 86 150 / 70%), rgb(34 54 95 / 80%));
+      z-index: 1;
+    }
+
+    .hero .sisalto {
+      position: relative;
+      z-index: 2;                    /* tekstin pitää olla ylimpänä */
+      max-width: 50ch;
+    }
+    .hero h1 { font-size: clamp(2.25rem, 2rem + 4vw, 5rem); line-height: 1.05; margin: 0 0 1rem; color: #fff; }
+    .hero p  { font-size: clamp(1.1rem, 1rem + 1vw, 1.5rem); margin: 0 0 2rem; }
+
+    /* Animaatio: 20 sekunnin kierto. Kuva näkyy 0–45 %, häivytys 45–50 %,
+       video 50–95 %, häivytys takaisin 95–100 %. Kaksi animaatiota ovat
+       toistensa peilikuvat, joten yksi häipyy kun toinen ilmestyy. */
+    @keyframes nayta-kuva {
+      0%, 45%   { opacity: 1; }
+      50%, 95%  { opacity: 0; }
+      100%      { opacity: 1; }
+    }
+    @keyframes nayta-video {
+      0%, 45%   { opacity: 0; }
+      50%, 95%  { opacity: 1; }
+      100%      { opacity: 0; }
+    }
+
+    /* Hidas zoom kuvaan (Ken Burns): kuva elää, vaikka olisi pysäytyskuva.
+       Yhdellä elementillä voi olla useita animaatioita pilkulla eroteltuna. */
+    @keyframes zoomaa {
+      from { transform: scale(1); }
+      to   { transform: scale(1.08); }
+    }
+    .hero .kuva  { animation: nayta-kuva 20s ease-in-out infinite, zoomaa 20s ease-in-out infinite alternate; }
+    .hero .video { animation: nayta-video 20s ease-in-out infinite; }
+
+    /* Käyttäjä on pyytänyt vähemmän liikettä: ei animaatioita, ei videota, vain kuva.
+       Video on HTML:ssä autoplay, mutta display:none pysäyttää sen. */
+    @media (prefers-reduced-motion: reduce) {
+      .hero .kuva  { animation: none; opacity: 1; transform: none; }
+      .hero .video { display: none; }
+    }
+
+    /* Kapea näyttö tai hidas yhteys: videon voi jättää pois myös leveyden mukaan.
+       Mobiilidata ei kiitä 10 Mt:n taustavideosta. */
+    @media (max-width: 40em) {
+      .hero:not(.hero-b) .video { display: none; }
+      .hero:not(.hero-b) .kuva  { animation: zoomaa 20s ease-in-out infinite alternate; opacity: 1; }
+    }
+
+    /* ---------- B. KÄYTTÄJÄN VALINTA ILMAN JAVASCRIPTIÄ ---------- */
+
+    /* Piilotetut radio-napit ja näkyvät label-painikkeet. :checked + sisarusvalitsin (~)
+       valitsee, kumpi media näkyy. Tämä on klassinen "CSS-only tabs" -malli. */
+    .valitsin { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1.5rem; position: relative; z-index: 2; }
+    .valitsin input { position: absolute; opacity: 0; width: 0; height: 0; }   /* piilossa, mutta saavutettava */
+    .valitsin label {
+      padding: 0.5rem 1.2rem; border: 2px solid #fff; border-radius: 999px;
+      font-weight: 700; color: #fff; cursor: pointer; margin: 0;
+    }
+    .valitsin input:checked + label { background: #FDBC00; color: #111; border-color: #FDBC00; }
+    .valitsin input:focus-visible + label { outline: 3px solid #FDBC00; outline-offset: 2px; }
+
+    /* B-versiossa ei automaattianimaatiota: käyttäjä päättää */
+    .hero-b .kuva, .hero-b .video { animation: none; }
+
+    /* Oletus: kuva näkyy, video piilossa. Kun "Video" on valittu, vaihdetaan. */
+    .hero-b .media { transition: opacity 600ms ease; }
+    .hero-b .video { opacity: 0; }
+    .hero-b:has(#nayta-video:checked) .kuva  { opacity: 0; }
+    .hero-b:has(#nayta-video:checked) .video { opacity: 1; }
+
+    /* Toinen osio-asettelu demoa varten */
+    .osio { padding: 2rem 1.25rem; max-width: 60rem; margin-inline: auto; }
+  </style>
+</head>
+<body>
+
+<!-- ============ A. automaattinen vuorottelu ============ -->
+<header class="hero">
+  <!-- Kuva ensin: se näkyy heti, video latautuu taustalla -->
+  <img class="media kuva" src="../img/icehockey.jpg" alt="" width="1920" height="1080">
+
+  <!-- autoplay toimii vain muted-attribuutin kanssa. playsinline estää iOS:ää avaamasta
+       koko näytön soitinta. loop toistaa. poster näyttää kuvan, kunnes video on ladattu.
+       Taustavideolla ei ole controls-attribuuttia eikä ääntä. -->
+  <video class="media video" src="../img/icehockey_tuupelaa.mp4" autoplay muted loop playsinline
+         poster="../img/icehockey.jpg" aria-hidden="true"></video>
+
+  <div class="sisalto">
+    <h1>Jääkiekkoa junioreille Kuopiossa</h1>
+    <p>Kuva ja video vuorottelevat 20 sekunnin kierrolla. Odota hetki tai katso DevToolsin Animations-paneelista.</p>
+    <a class="nappi" href="#b">Katso manuaalinen versio</a>
+  </div>
+</header>
+
+<section class="osio">
+  <h2>A · Automaattinen ristihäivytys</h2>
+  <ul>
+    <li>Kaksi <code>.media</code>-kerrosta samassa kohdassa (<code>position: absolute; inset: 0</code>), <code>object-fit: cover</code> täyttää alueen.</li>
+    <li>Kaksi <code>@keyframes</code>-animaatiota, jotka ovat toistensa peilikuvat: kun kuvan <code>opacity</code> laskee, videon nousee.</li>
+    <li><code>::before</code>-liukuväri tekstin ja median välissä pitää tekstin luettavana molemmissa.</li>
+    <li>Hidas zoom (<code>transform: scale</code>) kuvaan, jotta pysäytyskuvakin elää.</li>
+    <li><code>prefers-reduced-motion</code>: ei animaatioita, ei videota. Kapea näyttö: ei videota (mobiilidata).</li>
+  </ul>
+  <p>Video on taustaelementti: <code>muted</code> (muuten autoplay ei toimi), <code>loop</code>, <code>playsinline</code>, ei <code>controls</code>-attribuuttia, <code>aria-hidden="true"</code>. Pidä tiedosto pienenä: 10–20 sekuntia, 1280 px leveä, alle 5 Mt. HandBrake tai ffmpeg pakkaa.</p>
+</section>
+
+<!-- ============ B. käyttäjän valinta ============ -->
+<header class="hero hero-b" id="b">
+  <img class="media kuva" src="../img/icehockey.jpg" alt="" width="1920" height="1080">
+  <video class="media video" src="../img/icehockey_tuupelaa.mp4" autoplay muted loop playsinline
+         poster="../img/icehockey.jpg" aria-hidden="true"></video>
+
+  <div class="sisalto">
+    <h1>Valitse itse</h1>
+    <p>Radio-napit ja <code>:has(:checked)</code>: ei riviäkään JavaScriptiä.</p>
+    <div class="valitsin">
+      <input type="radio" name="media" id="nayta-kuva" checked>
+      <label for="nayta-kuva">Kuva</label>
+      <input type="radio" name="media" id="nayta-video">
+      <label for="nayta-video">Video</label>
+    </div>
+  </div>
+</header>
+
+<section class="osio">
+  <h2>B · Käyttäjä valitsee</h2>
+  <ul>
+    <li>Radio-napit piilotetaan (<code>opacity: 0</code>, ei <code>display: none</code>, jotta näppäimistö ja ruudunlukija löytävät ne), label toimii painikkeena.</li>
+    <li><code>.hero-b:has(#nayta-video:checked) .video { opacity: 1 }</code>: säiliö reagoi lapsensa tilaan. <code>:has()</code> toimii kaikissa nykyselaimissa.</li>
+    <li><code>transition: opacity 600ms</code> tekee vaihdosta pehmeän.</li>
+    <li>Sama malli toimii mihin tahansa "välilehdet ilman JavaScriptiä" -tarpeeseen: kuvagalleria, hinnasto kuukausi/vuosi, kieli fi/en.</li>
+  </ul>
+  <p>JavaScript-kurssilla tämä korvataan painikkeella, joka myös pysäyttää videon ja muistaa valinnan.</p>
+  <p><a href="index.html">← Kaikki esimerkit</a></p>
+</section>
+
+<footer><div class="alatunniste-tiedot"><p><small>Sakky · CSS-perusteet · Esimerkki 13</small></p></div></footer>
+</body>
+</html>

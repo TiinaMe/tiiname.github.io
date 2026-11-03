@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>10 · Hero-alue ja kiinnittyvä navigointi</title>
+  <!-- Tämä esimerkki EI käytä tyyli.css:ää, jotta koko sivun asettelu näkyy yhdestä paikasta. -->
+  <style>
+    /* ============================================================
+       TOTEUTUSMALLI: etusivun hero + sticky nav + osiot + footer
+       Käyttö: minkä tahansa projektin etusivu. Koko sivun runko gridillä,
+       navigointi pysyy ylhäällä, hero näyttävä aloitus.
+       ============================================================ */
+    :root {
+      --sininen: #3A5696; --tumma: #22365F; --keltainen: #FDBC00; --vaalea: #F3EBE2; --teksti: #111;
+      --nav-korkeus: 3.5rem;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Open Sans", Arial, sans-serif; line-height: 1.6; color: var(--teksti); background: #fff; }
+    img { max-width: 100%; display: block; }
+    h1, h2, h3 { line-height: 1.15; margin: 0 0 0.5em; }
+
+    /* ---- NAV: kiinnittyy yläreunaan, läpikuultava tausta sumennuksella ---- */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      height: var(--nav-korkeus);
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: 0 1.25rem;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);          /* sisältö kuultaa sumeana läpi */
+      border-bottom: 1px solid #DDD2C7;
+    }
+    .nav .logo { font-weight: 800; color: var(--sininen); text-decoration: none; font-size: 1.1rem; }
+    .nav ul { display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
+    .nav a:not(.logo) { display: block; padding: 0.5rem 0.9rem; color: var(--teksti); text-decoration: none; font-weight: 600; border-radius: 4px; }
+    .nav a:not(.logo):hover { background: var(--vaalea); }
+    .nav .cta { background: var(--keltainen); }     /* call to action: yksi korostettu linkki */
+    .nav .cta:hover { background: #E5A900; }
+
+    /* ---- HERO: koko leveys, liukuväri, teksti keskellä ---- */
+    .hero {
+      min-height: calc(100vh - var(--nav-korkeus));  /* täyttää näytön navin alta */
+      display: grid; place-items: center;            /* keskitys molempiin suuntiin yhdellä rivillä */
+      text-align: center;
+      padding: 3rem 1.25rem;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(58, 86, 150, 0.92), rgba(34, 54, 95, 0.96)),
+        url("../img/sakky.jpg") center / cover;      /* kuva pohjalla, liukuväri päällä = teksti luettavaa */
+    }
+    .hero h1 { font-size: clamp(2.25rem, 2rem + 4vw, 5rem); font-weight: 800; letter-spacing: -0.02em; }
+    .hero p  { font-size: clamp(1.1rem, 1rem + 1vw, 1.5rem); max-width: 40ch; margin: 0 auto 2rem; opacity: 0.92; }
+    .hero .napit { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .nappi { display: inline-block; padding: 0.9rem 1.8rem; border-radius: 999px; font-weight: 700; text-decoration: none; transition: transform 150ms ease, background 150ms ease; }
+    .nappi:hover { transform: translateY(-2px); }
+    .nappi-ensisijainen { background: var(--keltainen); color: var(--teksti); }
+    .nappi-ensisijainen:hover { background: #FAE274; }
+    .nappi-toissijainen { border: 2px solid #fff; color: #fff; }
+    .nappi-toissijainen:hover { background: rgba(255, 255, 255, 0.12); }
+
+    /* ---- OSIOT: vuorotteleva tausta, keskitetty palsta ---- */
+    .osio { padding: 4rem 1.25rem; scroll-margin-top: var(--nav-korkeus); }  /* ankkuri ei jää navin alle */
+    .osio:nth-of-type(even) { background: var(--vaalea); }
+    .osio > * { max-width: 60rem; margin-inline: auto; }
+    .osio h2 { color: var(--sininen); font-size: clamp(1.75rem, 1.5rem + 1.5vw, 2.5rem); text-align: center; }
+    .osio h2 + p { text-align: center; color: #585858; max-width: 50ch; margin-bottom: 2.5rem; }
+
+    /* Kolme numeroa / etua rivissä */
+    .edut { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 2rem; text-align: center; }
+    .edut .luku { font-size: 3rem; font-weight: 800; color: var(--sininen); line-height: 1; }
+    .edut p { margin: 0.25rem 0 0; color: #585858; }
+
+    /* ---- FOOTER ---- */
+    footer { background: var(--tumma); color: var(--vaalea); padding: 2rem 1.25rem; text-align: center; font-size: 0.9rem; }
+    footer a { color: var(--keltainen); }
+
+    /* ---- Kapea näyttö: valikko piiloon paitsi CTA (täysi mobiilivalikko tehdään JS-kurssilla) ---- */
+    @media (max-width: 40em) {
+      .nav li:not(.nayta-aina) { display: none; }
+      .hero { min-height: 70vh; }
+    }
+    @media (prefers-reduced-motion: reduce) { .nappi { transition: none; } .nappi:hover { transform: none; } }
+  </style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Päävalikko">
+  <a class="logo" href="#">Kiekkokerho</a>
+  <ul>
+    <li><a href="#tietoa">Tietoa</a></li>
+    <li><a href="#joukkueet">Joukkueet</a></li>
+    <li><a href="#ajat">Ajat</a></li>
+    <li class="nayta-aina"><a class="cta" href="#ilmoittaudu">Ilmoittaudu</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <div>
+    <h1>Jääkiekkoa junioreille Kuopiossa</h1>
+    <p>Luistelukoulusta C-junioreihin. Kaksi ensimmäistä kertaa ilmaiseksi, varusteet voi lainata.</p>
+    <div class="napit">
+      <a class="nappi nappi-ensisijainen" href="#ilmoittaudu">Ilmoittaudu kokeilemaan</a>
+      <a class="nappi nappi-toissijainen" href="#ajat">Katso harjoitusajat</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="osio" id="tietoa">
+    <h2>Seura numeroina</h2>
+    <p>Vuodesta 1998 Niiralan Montulla.</p>
+    <div class="edut">
+      <div><div class="luku">120</div><p>pelaajaa</p></div>
+      <div><div class="luku">6</div><p>ikäluokkaa</p></div>
+      <div><div class="luku">40</div><p>vapaaehtoista</p></div>
+    </div>
+  </section>
+
+  <section class="osio" id="joukkueet">
+    <h2>Joukkueet</h2>
+    <p>Jokaiselle löytyy oma ryhmä. Tähän tulee korttiruudukko (esimerkki 09).</p>
+    <p style="text-align:center;color:#585858">[ korttiruudukko ]</p>
+  </section>
+
+  <section class="osio" id="ajat">
+    <h2>Harjoitusajat</h2>
+    <p>Tähän tulee taulukko (esimerkki 12).</p>
+    <p style="text-align:center;color:#585858">[ taulukko ]</p>
+  </section>
+
+  <section class="osio" id="ilmoittaudu">
+    <h2>Ilmoittaudu</h2>
+    <p>Tähän tulee lomake (esimerkki 12). Vieritä ylös ja huomaa, että navigointi pysyy koko ajan näkyvissä ja ankkurilinkit pysähtyvät oikeaan kohtaan navin alle (scroll-margin-top).</p>
+    <p style="text-align:center;color:#585858">[ lomake ]</p>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Kuopion Kiekkokerho ry · <a href="mailto:info@example.fi">info@example.fi</a></p>
+  <p><a href="index.html">← Kaikki esimerkit</a></p>
+</footer>
+</body>
+</html>

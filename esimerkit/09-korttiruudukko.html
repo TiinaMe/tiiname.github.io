@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09 · Korttiruudukko hover-efektillä</title>
+  <link rel="stylesheet" href="../css/tyyli.css">
+  <style>
+    /* ============================================================
+       TOTEUTUSMALLI: korttiruudukko
+       Käyttö: projektit (CV), tuotteet, joukkueet, harrastuksen varusteet,
+       kodin huoltokohteet. Toistuva article.kortti + grid-säiliö.
+       ============================================================ */
+
+    .ruudukko {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+      gap: 1.5rem;
+    }
+
+    .projekti {
+      /* Kortti on flex-sarake, jotta alaosa (tagit, linkki) painuu pohjaan
+         vaikka tekstin pituus vaihtelee. */
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border: 1px solid #DDD2C7;
+      border-radius: 8px;
+      overflow: hidden;               /* kuvan kulmat pyöristyvät kortin mukana */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      transition: transform 200ms ease, box-shadow 200ms ease;   /* mitä animoidaan ja kuinka kauan */
+    }
+
+    /* hover JA focus-within: toimii hiirellä ja näppäimistöllä */
+    .projekti:hover,
+    .projekti:focus-within {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(58, 86, 150, 0.18);
+    }
+
+    /* Kuva-alue: kiinteä kuvasuhde, kuva täyttää rajaamalla */
+    .projekti img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      transition: transform 400ms ease;
+    }
+    .projekti:hover img { transform: scale(1.04); }   /* kuva zoomaa hieman, overflow: hidden rajaa */
+
+    .projekti .sisalto {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1;                        /* täyttää kortin, jotta footer painuu alas */
+    }
+
+    .projekti h3 { margin: 0; font-size: 1.2rem; }
+    .projekti p  { margin: 0; color: #585858; font-size: 0.95rem; }
+
+    /* Tagit: pieniä pillereitä rivissä */
+    .tagit { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; padding-top: 0.5rem; }
+    .tagit span {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em;
+      background: #FAE274; color: #111;
+      padding: 0.2rem 0.6rem; border-radius: 999px;   /* iso radius = pilleri */
+    }
+
+    /* Koko kortti klikattavaksi ilman, että a-elementti kääritään kaiken ympärille:
+       linkki ::after-pseudoelementillä kortin päälle. Saavutettava: linkkiteksti pysyy järkevänä. */
+    .projekti { position: relative; }
+    .projekti a.koko-kortti::after { content: ""; position: absolute; inset: 0; }
+    .projekti a.koko-kortti { color: #3A5696; font-weight: 700; text-decoration: none; }
+    .projekti a.koko-kortti:hover { text-decoration: underline; }
+
+    /* Korostettu kortti: vie kaksi palstaa isolla näytöllä */
+    @media (min-width: 60em) {
+      .projekti.nosto { grid-column: span 2; }
+      .projekti.nosto img { aspect-ratio: 21 / 9; }
+    }
+
+    /* Käyttäjä ei halua liikettä: poista animaatiot */
+    @media (prefers-reduced-motion: reduce) {
+      .projekti, .projekti img { transition: none; }
+      .projekti:hover { transform: none; }
+      .projekti:hover img { transform: none; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <a href="../index.html"><img src="../img/sakky.jpg" alt="Logo" width="100" height="100"></a>
+  <h1>09 · Korttiruudukko</h1>
+</header>
+<nav><ul><li><a href="index.html">Kaikki esimerkit</a></li><li><a href="08-responsiivinen.html">← Edellinen</a></li><li><a href="10-hero-ja-sticky-nav.html">Seuraava →</a></li></ul></nav>
+
+<main>
+  <p>Toteutusmalli, jota tarvitset lähes jokaisessa projektissa: toistuvat lohkot ruudukossa, hover-nosto, kuva kiinteällä kuvasuhteella ja tagit, jotka painuvat kortin pohjaan tekstin pituudesta riippumatta. Vie hiiri kortin päälle ja siirry Tab-näppäimellä kortista toiseen.</p>
+
+  <section>
+    <h2>Projektit</h2>
+    <div class="ruudukko">
+      <article class="projekti nosto">
+        <img src="../img/sakky.jpg" alt="Kuvakaappaus Kiekkokerhon sivustosta" width="800" height="450">
+        <div class="sisalto">
+          <h3><a class="koko-kortti" href="#">Kiekkokerhon sivusto</a></h3>
+          <p>Yhdistyksen sivut HTML:llä ja CSS:llä: harjoitusajat, joukkueet, ilmoittautumislomake. Nostokortti vie isolla näytöllä kaksi palstaa.</p>
+          <div class="tagit"><span>HTML</span><span>CSS</span><span>GitHub Pages</span></div>
+        </div>
+      </article>
+      <article class="projekti">
+        <img src="../img/sakky.jpg" alt="" width="800" height="450">
+        <div class="sisalto">
+          <h3><a class="koko-kortti" href="#">Varustelaskuri</a></h3>
+          <p>Lyhyt kuvaus. Tagit painuvat pohjaan, vaikka tämä teksti on lyhyempi kuin naapurin.</p>
+          <div class="tagit"><span>JavaScript</span></div>
+        </div>
+      </article>
+      <article class="projekti">
+        <img src="../img/sakky.jpg" alt="" width="800" height="450">
+        <div class="sisalto">
+          <h3><a class="koko-kortti" href="#">Mökin huoltokirja</a></h3>
+          <p>Huoltohistoria taulukkona, vuosikello listana ja tärkeät numerot. Tehty kodin ylläpito -projektina, jatkokehitetty muistutuksilla.</p>
+          <div class="tagit"><span>HTML</span><span>CSS</span><span>Taulukot</span></div>
+        </div>
+      </article>
+      <article class="projekti">
+        <img src="../img/sakky.jpg" alt="" width="800" height="450">
+        <div class="sisalto">
+          <h3><a class="koko-kortti" href="#">Reseptikokoelma</a></h3>
+          <p>Perheen reseptit kortteina, ainesosalistat ja ohjeet numeroituina listoina.</p>
+          <div class="tagit"><span>HTML</span><span>CSS</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Mitä tässä opitaan</h2>
+    <ul>
+      <li><code>transition</code> + <code>transform</code>: pehmeä nosto ilman JavaScriptiä. Animoi vain transformia ja opacityä, ne ovat kevyitä.</li>
+      <li><code>aspect-ratio</code> + <code>object-fit: cover</code>: kaikki kuvat samankokoisina, vaikka alkuperäiset olisivat eri muotoisia.</li>
+      <li>Kortti on <code>flex-direction: column</code> ja sisältö <code>flex: 1</code>, jolloin <code>margin-top: auto</code> painaa tagit pohjaan.</li>
+      <li><code>:focus-within</code> antaa saman noston näppäimistökäyttäjälle.</li>
+      <li><code>prefers-reduced-motion</code> kunnioittaa käyttäjän asetusta.</li>
+    </ul>
+  </section>
+</main>
+<footer><div class="alatunniste-tiedot"><p><small>Sakky · CSS-perusteet · Esimerkki 09</small></p></div></footer>
+</body>
+</html>

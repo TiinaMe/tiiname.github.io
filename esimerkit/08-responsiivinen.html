@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <!-- ILMAN tätä riviä puhelin näyttää sivun 980 px leveänä ja pienentää sen. Mikään media query ei toimi. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>08 · Responsiivisuus</title>
+  <link rel="stylesheet" href="../css/tyyli.css">
+  <style>
+    .demo { border: 1px solid #DDD2C7; padding: 1rem; margin-bottom: 1.5rem; background: #fff; }
+
+    /* ---- 1. Leveysilmaisin: näyttää, mikä media query on voimassa ---- */
+    .ilmaisin { padding: 1rem; font-weight: 700; text-align: center; background: #B00020; color: #fff; }
+    .ilmaisin::after { content: "Puhelin: alle 600 px"; }
+
+    @media (min-width: 600px)  { .ilmaisin { background: #E07000; } .ilmaisin::after { content: "Tabletti: 600–899 px"; } }
+    @media (min-width: 900px)  { .ilmaisin { background: #3A5696; } .ilmaisin::after { content: "Työpöytä: 900–1199 px"; } }
+    @media (min-width: 1200px) { .ilmaisin { background: #1B7F3B; } .ilmaisin::after { content: "Iso näyttö: 1200 px tai enemmän"; } }
+
+    /* ---- 2. Mobile first: perussäännöt puhelimelle, min-width lisää isommille ---- */
+    .palstat { display: grid; gap: 1rem; }                       /* puhelin: yksi palsta */
+    .palstat > * { background: #FAE274; padding: 1rem; margin: 0; }
+    @media (min-width: 600px)  { .palstat { grid-template-columns: 1fr 1fr; } }       /* tabletti: kaksi */
+    @media (min-width: 900px)  { .palstat { grid-template-columns: repeat(3, 1fr); } } /* työpöytä: kolme */
+
+    /* ---- 3. Valikko: pystyssä puhelimessa, vaakaan isommalla ---- */
+    .valikko { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+    .valikko a { display: block; padding: 0.75rem 1rem; background: #3A5696; color: #fff; text-decoration: none; text-align: center; }
+    @media (min-width: 600px) { .valikko { flex-direction: row; } .valikko li { flex: 1; } }
+
+    /* ---- 4. Piilota tai näytä leveyden mukaan ---- */
+    .vain-mobiili { display: block; }
+    .vain-tyopoyta { display: none; }
+    @media (min-width: 900px) { .vain-mobiili { display: none; } .vain-tyopoyta { display: block; } }
+
+    /* ---- 5. Sujuva typografia: clamp(min, toivottu, max) ---- */
+    .sujuva { font-size: clamp(1.5rem, 1rem + 3vw, 3.5rem); line-height: 1.1; color: #3A5696; margin: 0; }
+
+    /* ---- 6. Kuvat ja taulukot eivät saa vuotaa yli ---- */
+    .kuva-demo img { max-width: 100%; height: auto; }
+    .taulukko-kaare { overflow-x: auto; }   /* leveä taulukko vierii omassa laatikossaan, ei riko sivua */
+
+    /* ---- 7. Käyttäjän asetukset ovat myös media queryjä ---- */
+    @media (prefers-color-scheme: dark)   { .asetus-tumma::after  { content: " ✔ tumma tila päällä"; } }
+    @media (prefers-reduced-motion: reduce) { .asetus-liike::after { content: " ✔ vähennetty liike päällä"; } }
+    @media (orientation: landscape) { .asetus-suunta::after { content: " vaaka"; } }
+    @media (orientation: portrait)  { .asetus-suunta::after { content: " pysty"; } }
+    @media (hover: hover) { .asetus-hover::after { content: " ✔ hiiri (hover toimii)"; } }
+    @media (hover: none)  { .asetus-hover::after { content: " ✔ kosketus (ei hoveria)"; } }
+  </style>
+</head>
+<body>
+<header>
+  <a href="../index.html"><img src="../img/sakky.jpg" alt="Logo" width="100" height="100"></a>
+  <h1>08 · Responsiivisuus</h1>
+</header>
+<nav><ul><li><a href="index.html">Kaikki esimerkit</a></li><li><a href="07-grid.html">← Edellinen</a></li><li><a href="09-korttiruudukko.html">Seuraava →</a></li></ul></nav>
+
+<main>
+  <p>Responsiivinen sivu mukautuu näytön leveyteen. Työkalut: <strong>viewport-meta</strong>, <strong>joustavat yksiköt</strong>, <strong>flex/grid</strong> ja <strong>media queryt</strong>. Avaa F12 → laitetila (Ctrl+Shift+M) ja vedä leveyttä: seuraa, miten alla oleva muuttuu.</p>
+
+  <div class="demo">
+    <h3>1 · Mikä leveys on voimassa?</h3>
+    <div class="ilmaisin"></div>
+    <pre><code>@media (min-width: 600px)  { … }   /* tästä ylöspäin */
+@media (min-width: 900px)  { … }
+@media (min-width: 1200px) { … }</code></pre>
+  </div>
+
+  <div class="demo">
+    <h3>2 · Mobile first: 1 → 2 → 3 palstaa</h3>
+    <div class="palstat"><p>Yksi</p><p>Kaksi</p><p>Kolme</p><p>Neljä</p><p>Viisi</p><p>Kuusi</p></div>
+    <p>Kirjoita ensin puhelimen tyylit ilman media queryä. Lisää <code>min-width</code>-säännöillä vain se, mikä muuttuu isommalla. Puhelin lataa vähiten CSS:ää ja saat yksinkertaisimman version ensin valmiiksi.</p>
+  </div>
+
+  <div class="demo">
+    <h3>3 · Valikko: pysty → vaaka</h3>
+    <ul class="valikko"><li><a href="#">Etusivu</a></li><li><a href="#">Joukkueet</a></li><li><a href="#">Ajat</a></li><li><a href="#">Yhteys</a></li></ul>
+  </div>
+
+  <div class="demo">
+    <h3>4 · Näytä tai piilota leveyden mukaan</h3>
+    <p class="vain-mobiili">📱 Tämä näkyy vain alle 900 px. Esim. lyhyt yhteystietorivi.</p>
+    <p class="vain-tyopoyta">🖥 Tämä näkyy vain 900 px ja yli. Esim. sivupalkin lisätiedot.</p>
+    <p>Käytä säästeliäästi: piilotettu sisältö ladataan silti. Älä piilota mitään tärkeää puhelimelta.</p>
+  </div>
+
+  <div class="demo">
+    <h3>5 · Sujuva otsikko clamp()-funktiolla</h3>
+    <p class="sujuva">Tämä otsikko skaalautuu</p>
+    <pre><code>font-size: clamp(1.5rem, 1rem + 3vw, 3.5rem);
+/*           min    toivottu (kasvaa ikkunan mukana)  max */</code></pre>
+  </div>
+
+  <div class="demo kuva-demo">
+    <h3>6 · Kuva ja taulukko eivät vuoda yli</h3>
+    <img src="../img/sakky.jpg" alt="Logo" width="600" height="600" style="width:600px">
+    <p><code>img { max-width: 100%; height: auto; }</code> kutistaa kuvan säiliön levyiseksi. Tämä on jo <code>tyyli.css</code>:ssä.</p>
+    <div class="taulukko-kaare">
+      <table>
+        <thead><tr><th>Päivä</th><th>Aika</th><th>Ryhmä</th><th>Kaukalo</th><th>Valmentaja</th><th>Huomiot</th><th>Pukuhuone</th></tr></thead>
+        <tbody><tr><td>Ma</td><td>17–18</td><td>LKK</td><td>Puolikas A</td><td>Sanna Virtanen</td><td>Luistelukoulu</td><td>3</td></tr></tbody>
+      </table>
+    </div>
+    <p>Leveä taulukko on kääritty <code>div</code>-elementtiin, jolla on <code>overflow-x: auto</code>: taulukko vierii omassa laatikossaan.</p>
+  </div>
+
+  <div class="demo">
+    <h3>7 · Media queryt käyttäjän asetuksille</h3>
+    <p class="asetus-tumma">prefers-color-scheme:</p>
+    <p class="asetus-liike">prefers-reduced-motion:</p>
+    <p class="asetus-suunta">orientation:</p>
+    <p class="asetus-hover">hover:</p>
+    <p>Kokeile DevToolsin Rendering-paneelista (oppitunti 2): emuloi tumma tila ja katso, miten rivi muuttuu.</p>
+  </div>
+
+  <section>
+    <h2>Yleiset raja-arvot</h2>
+    <p>Ei ole oikeita lukuja: valitse rajat siitä, missä <em>oma</em> asettelusi alkaa näyttää huonolta. Hyvä lähtökohta: <code>600px</code> (puhelin → tabletti), <code>900px</code> (tabletti → työpöytä), <code>1200px</code> (leveä). Käytä <code>em</code>-yksikköä media queryissä (<code>37.5em</code> = 600 px), niin raja seuraa käyttäjän fonttikokoa.</p>
+  </section>
+</main>
+<footer><div class="alatunniste-tiedot"><p><small>Sakky · CSS-perusteet · Esimerkki 08</small></p></div></footer>
+</body>
+</html>
