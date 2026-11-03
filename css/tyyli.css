@@ -1,26 +1,11 @@
 /* ============================================================
    tyyli.css · Default-sivuston perusmalli
    Sakky · HTML-perusteet · Oppitunti 5
-
-   Tämä tiedosto antaa järkevän perusasetuksen JOKAISELLE HTML-elementille,
-   jota kurssilla käytetään. Se ei ole minkään tietyn sivuston ulkoasu,
-   vaan pohja, jonka päälle oma ulkoasu rakennetaan.
-
-   Miten käytät:
-   1. Avaa esimerkit/00-kaikki-elementit.html selaimeen (Live Server).
-   2. Avaa tämä tiedosto viereen.
-   3. Etsi "KOKEILE:"-kommentit ja tee mitä ne ehdottavat. Tallenna, katso.
-   4. Kun löydät mieluisan arvon, jätä se. Kun et, Ctrl+Z.
-
-   Järjestys = sama kuin dioissa:
-   1 muuttujat · 2 nollaus · 3 teksti · 4 listat · 5 linkit · 6 media
-   7 taulukot · 8 lomakkeet · 9 interaktiiviset · 10 sivun runko
-   11 apuluokat · 12 responsiivisuus · 13 tulostus · 14 tumma tila · 15 omat
    ============================================================ */
 
 
 /* ============================================================
-   1. MUUTTUJAT
+  MUUTTUJAT
    Määritellään kerran, käytetään var(--nimi). Vaihda nämä ensin:
    koko sivusto vaihtuu, eikä muuta tarvitse koskea.
    ============================================================ */
@@ -54,7 +39,7 @@
 
 
 /* ============================================================
-   2. NOLLAUS JA PERUSASETUKSET
+   NOLLAUS JA PERUSASETUKSET
    Selaimilla on omat oletustyylit (user agent stylesheet, oppitunti 1),
    jotka eroavat hieman toisistaan. Nämä rivit tasoittavat erot.
    ============================================================ */
@@ -103,7 +88,7 @@ input, button, textarea, select {
 
 
 /* ============================================================
-   3. TEKSTI
+   TEKSTI
    ============================================================ */
 
 /* Otsikot: yksi asteikko, 1.25-kerroin. KOKEILE: vaihda kerroin 1.5:een (2.5 / 1.75 / 1.25 → 3.4 / 2.25 / 1.5). */
@@ -149,56 +134,9 @@ sub, sup  { font-size: 0.75em; line-height: 0; position: relative; }  /* line-he
 sub       { bottom: -0.25em; }
 sup       { top: -0.5em; }
 
-/* Lyhenne: pisteviiva ja kysymysmerkkikursori kertovat, että selitys löytyy */
-abbr[title] {
-  text-decoration: underline dotted;
-  text-underline-offset: 0.15em;
-  cursor: help;
-}
 
-/* Lainaukset */
-blockquote {
-  border-left: 6px solid var(--vari-korostus);
-  padding: 0.75rem var(--vali);
-  background: var(--vari-pinta);
-  color: var(--vari-teksti-2);
-  font-style: italic;
-}
-blockquote footer, blockquote cite { font-style: normal; font-size: 0.9em; }
-q::before { content: "\201D"; }   /* suomalaiset lainausmerkit ” ” */
-q::after  { content: "\201D"; }
-cite      { font-style: italic; }
 
-/* Koodi */
-code, kbd, samp, var, pre {
-  font-family: var(--fontti-koodi);
-  font-size: 0.95em;
-}
-code {
-  background: var(--vari-korostus-2);
-  padding: 0.1em 0.35em;
-  border-radius: var(--kulma);
-}
-pre {
-  background: var(--vari-teksti);
-  color: var(--vari-tausta);
-  padding: var(--vali);
-  border-radius: var(--kulma);
-  overflow-x: auto;             /* pitkä rivi vierii, ei riko asettelua */
-  line-height: 1.5;
-  max-width: none;
-}
-pre code { background: none; padding: 0; color: inherit; }
-kbd {
-  background: var(--vari-pinta);
-  border: 1px solid var(--vari-viiva);
-  border-bottom-width: 3px;     /* näppäimen kolmiulotteisuus */
-  border-radius: var(--kulma);
-  padding: 0.1em 0.5em;
-  font-size: 0.85em;
-}
-samp { color: var(--vari-teksti-2); }
-var  { font-style: italic; }
+
 
 /* Aika, osoite, vaakaviiva, rivinvaihto */
 time    { font-variant-numeric: tabular-nums; }   /* numerot tasalevyisinä */
@@ -211,7 +149,7 @@ hr {
 
 
 /* ============================================================
-   4. LISTAT
+   LISTAT
    ============================================================ */
 ul, ol {
   padding-left: 1.5rem;         /* luettelomerkin tila. KOKEILE: 0 + list-style: none → valikkolista. */
@@ -223,15 +161,9 @@ ul { list-style: disc; }        /* KOKEILE: square, circle, "– " (merkkijono),
 ol { list-style: decimal; }     /* KOKEILE: lower-alpha, upper-roman */
 li::marker { color: var(--vari-paa); }      /* vain luettelomerkin väri */
 
-/* Määrittelylista: termi lihavoituna, selitys sisennettynä */
-dl { display: grid; grid-template-columns: max-content 1fr; gap: 0.25rem 1.5rem; }
-dt { font-weight: 700; color: var(--vari-paa); }
-dd { margin: 0; }
-/* KOKEILE: poista dl:n display: grid → selaimen oletus (termi ylhäällä, selitys sisennettynä alla) */
-
 
 /* ============================================================
-   5. LINKIT
+ LINKIT
    ============================================================ */
 a {
   color: var(--vari-paa);
@@ -257,29 +189,13 @@ a[target="_blank"]::after  { content: "\00A0\2197"; font-size: 0.8em; }  /* ↗ 
 
 
 /* ============================================================
-   6. MEDIA
+   MEDIA
    ============================================================ */
 img { border-radius: var(--kulma); }        /* KOKEILE: 50% → pyöreä (neliökuvalla) */
-figure { margin-inline: 0; }
-figcaption {
-  font-size: 0.875rem;
-  color: var(--vari-teksti-2);
-  margin-top: 0.5rem;
-}
-video, audio { width: 100%; border-radius: var(--kulma); }
-audio { height: 3rem; }
-iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;         /* korkeus seuraa leveyttä; YouTube-upotus pysyy oikeassa muodossa */
-  height: auto;
-  border: 0;
-  border-radius: var(--kulma);
-}
-svg { fill: currentColor; }     /* ikoni perii tekstin värin */
 
 
 /* ============================================================
-   7. TAULUKOT
+  TAULUKOT
    ============================================================ */
 table {
   width: 100%;
@@ -631,8 +547,8 @@ body > footer p { max-width: none; }
    mikä muuttuu isommalla näytöllä. KOKEILE: vaihda raja 48em → 30em tai 70em.
    ============================================================ */
 @media (min-width: 48em) {      /* 768 px */
-  h1 { font-size: 3rem; }
-  h2 { font-size: 2.25rem; }
+  h1 { font-size: 1rem; }
+  h2 { font-size: 0.225rem; }
   main { padding: calc(var(--vali) * 3); }
   header img { width: 96px; height: 96px; }
   form.kaksi-palstaa { grid-template-columns: 1fr 1fr; }       /* <form class="kaksi-palstaa"> */
