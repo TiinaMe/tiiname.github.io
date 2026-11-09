@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>20 · Välilehdet ilman JavaScriptiä</title>
+  <link rel="stylesheet" href="../css/tyyli.css">
+  <style>
+    /* ============================================================
+       TOTEUTUSMALLI: välilehdet radio-napeilla
+       Sama temppu kuin esimerkin 13 kuva/video-valitsimessa, mutta
+       sisällölle. Radio-napit samalla name-arvolla: vain yksi voi olla
+       valittuna kerrallaan, joten vain yksi välilehti näkyy.
+       ============================================================ */
+
+    .valilehdet {
+      border: 1px solid var(--vari-viiva);
+      border-radius: var(--kulma);
+      overflow: hidden;
+      background: var(--vari-pinta);
+    }
+
+    /* Radiot piiloon, mutta saavutettaviksi */
+    .valilehdet > input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* Välilehtirivi: labelit vierekkäin */
+    .valilehdet .rivi {
+      display: flex;
+      flex-wrap: wrap;
+      background: var(--vari-tausta);
+      border-bottom: 1px solid var(--vari-viiva);
+    }
+    .valilehdet label {
+      flex: 1 1 auto;
+      margin: 0;
+      padding: 0.75rem 1.25rem;
+      text-align: center;
+      font-weight: 600;
+      color: var(--vari-teksti-2);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;   /* paikka valinnan viivalle */
+      transition: color var(--siirtyma), border-color var(--siirtyma);
+    }
+    .valilehdet label:hover { color: var(--vari-paa); }
+
+    /* Sisältöpaneelit: kaikki piilossa oletuksena */
+    .valilehdet .paneeli {
+      display: none;
+      padding: var(--vali) calc(var(--vali) * 1.5);
+      animation: haivy 200ms ease-out;
+    }
+    @keyframes haivy { from { opacity: 0; translate: 0 4px; } to { opacity: 1; translate: 0; } }
+
+    /* ---- YDIN: valittu radio → sen label korostuu ja sen paneeli näkyy ----
+       Radiot ovat .valilehdet-säiliön suoria lapsia, joten :has() näkee ne.
+       #id:checked yhdistää radion oikeaan labeliin ja paneeliin.            */
+    .valilehdet:has(#v1:checked) label[for="v1"],
+    .valilehdet:has(#v2:checked) label[for="v2"],
+    .valilehdet:has(#v3:checked) label[for="v3"] {
+      color: var(--vari-paa);
+      border-bottom-color: var(--vari-korostus);
+    }
+    .valilehdet:has(#v1:checked) #p1,
+    .valilehdet:has(#v2:checked) #p2,
+    .valilehdet:has(#v3:checked) #p3 { display: block; }
+
+    /* Näppäimistö: nuolinäppäimet vaihtavat radiota, fokus näkyy labelissa */
+    .valilehdet > input:focus-visible + .rivi label,
+    .valilehdet:has(input:focus-visible) label:hover { outline: none; }
+    .valilehdet:has(#v1:focus-visible) label[for="v1"],
+    .valilehdet:has(#v2:focus-visible) label[for="v2"],
+    .valilehdet:has(#v3:focus-visible) label[for="v3"] { outline: 3px solid var(--vari-korostus); outline-offset: -3px; }
+
+    @media (prefers-reduced-motion: reduce) { .valilehdet .paneeli { animation: none; } }
+
+    /* Kapea ruutu: välilehdet allekkain */
+    @media (max-width: 30em) {
+      .valilehdet label { flex-basis: 100%; border-bottom: 1px solid var(--vari-viiva); border-left: 3px solid transparent; text-align: left; }
+      .valilehdet:has(#v1:checked) label[for="v1"],
+      .valilehdet:has(#v2:checked) label[for="v2"],
+      .valilehdet:has(#v3:checked) label[for="v3"] { border-left-color: var(--vari-korostus); border-bottom-color: var(--vari-viiva); }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <a href="../index.html"><img src="../img/sakky.jpg" alt="Logo" width="64" height="64"></a>
+  <h1>20 · Välilehdet</h1>
+</header>
+<nav><ul>
+  <li><a href="../index.html">Etusivu</a></li>
+  <li><a href="index.html">CSS-esimerkit</a></li>
+</ul></nav>
+<main>
+  <p class="kapea">Kolme välilehteä, yksi näkyvissä kerrallaan. Radio-napit tekevät valinnan, <code>:has()</code> näyttää oikean paneelin. Kokeile myös näppäimistöllä: Tab välilehtiriville, nuolet vaihtavat.</p>
+
+  <div class="valilehdet">
+    <!-- Radiot ensin, samalla name-arvolla. checked = oletusvälilehti. -->
+    <input type="radio" name="vl" id="v1" checked>
+    <input type="radio" name="vl" id="v2">
+    <input type="radio" name="vl" id="v3">
+
+    <div class="rivi">
+      <label for="v1">Harjoitukset</label>
+      <label for="v2">Hinnasto</label>
+      <label for="v3">Varusteet</label>
+    </div>
+
+    <section class="paneeli" id="p1">
+      <h2>Harjoitukset</h2>
+      <p>U10 tiistaisin ja torstaisin klo 17–18. U13 maanantaisin, keskiviikkoisin ja perjantaisin klo 17.30–19. Edustus maanantaisin, keskiviikkoisin ja torstaisin klo 19–20.30.</p>
+    </section>
+    <section class="paneeli" id="p2">
+      <h2>Hinnasto</h2>
+      <table>
+        <thead><tr><th>Joukkue</th><th class="numero">Kausimaksu</th></tr></thead>
+        <tbody>
+          <tr><td>U10</td><td class="numero">450 €</td></tr>
+          <tr><td>U13</td><td class="numero">690 €</td></tr>
+          <tr><td>Edustus</td><td class="numero">900 €</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="paneeli" id="p3">
+      <h2>Varusteet</h2>
+      <ul>
+        <li>Luistimet, kypärä ja kaulasuoja pakolliset ensimmäisestä kerrasta alkaen.</li>
+        <li>Lainavarusteita seuran varastosta ensimmäiseksi kuukaudeksi.</li>
+        <li>Mailan pituus: pystyssä seisten lavan kärki lattiassa, varren pää leuan korkeudella.</li>
+      </ul>
+    </section>
+  </div>
+
+  <h2>Miten tämä toimii</h2>
+  <ol>
+    <li>Kolme <code>&lt;input type="radio" name="vl"&gt;</code>: sama name tarkoittaa, että vain yksi voi olla valittu. Tämä on koko "yksi kerrallaan" -logiikka.</li>
+    <li>Labelit ovat välilehtien otsikot. <code>for="v2"</code> yhdistää labelin radioon, joten labelin klikkaus ruksaa radion.</li>
+    <li><code>.valilehdet:has(#v2:checked) #p2 { display: block }</code>: kun radio 2 on valittu, paneeli 2 näkyy. Kolme sääntöä, kolme paneelia.</li>
+    <li>Sama <code>:has()</code>-valitsin korostaa aktiivisen labelin alareunaviivalla.</li>
+    <li>Radiot ovat säiliön suoria lapsia, eivät labelin sisällä: silloin <code>:has()</code> ja <code>+</code>/<code>~</code>-valitsimet löytävät ne.</li>
+  </ol>
+
+  <h2>Rajat</h2>
+  <ul>
+    <li>Jokainen uusi välilehti vaatii kolme riviä CSS:ää lisää (label-korostus, paneeli, fokus). JS:llä sama koodi hoitaa kaikki.</li>
+    <li>Valinta ei säily sivunvaihdossa eikä sitä voi linkittää. Esimerkin 19 <code>:target</code>-tekniikka taas voi, mutta hyppää sivulla.</li>
+    <li>Ruudunlukijalle tämä on lomake, ei välilehdistö. Oikeat ARIA-roolit (<code>role="tablist"</code>) vaativat JS:ää toimiakseen oikein.</li>
+  </ul>
+
+  <h2>Kokeile</h2>
+  <ul>
+    <li>Vaihda <code>checked</code> toiseen radioon: oletusvälilehti vaihtuu.</li>
+    <li>Poista yhdeltä radiolta <code>name="vl"</code>. Mitä tapahtuu, kun klikkaat sitä ja sitten toista?</li>
+    <li>Lisää neljäs välilehti. Laske, montako kohtaa muutit.</li>
+    <li>Tee sama malli hinnastolle: välilehdet "Kuukausi / Vuosi", paneeleissa eri hinnat.</li>
+  </ul>
+
+  <p><a href="index.html">← Kaikki esimerkit</a></p>
+</main>
+<footer><div class="alatunniste-tiedot"><p><small>Sakky · CSS-perusteet · Esimerkki 20</small></p></div></footer>
+</body>
+</html>

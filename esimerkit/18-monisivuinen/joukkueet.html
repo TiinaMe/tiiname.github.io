@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Joukkueet – Kuopion Kiekkokerho</title>
+  <meta name="description" content="Kuopion Kiekkokerhon joukkueet ja harjoitusajat.">
+  <!-- Kaksi tyylitiedostoa: ensin kurssin perusmalli, sitten tämän sivuston omat lisäykset -->
+  <link rel="stylesheet" href="../../css/tyyli.css">
+  <link rel="stylesheet" href="sivusto.css">
+</head>
+<body>
+<a class="ohita" href="#sisalto">Siirry sisältöön</a>
+
+<!-- SAMA HEADER JA NAV JOKA SIVULLA. Kun muutat, muuta kaikkiin kolmeen. -->
+<header>
+  <a href="index.html"><img src="../../img/sakky.jpg" alt="Kuopion Kiekkokerhon logo" width="64" height="64"></a>
+  <h1>Kuopion Kiekkokerho</h1>
+</header>
+<nav aria-label="Päävalikko">
+  <input type="checkbox" id="valikko" class="valikko-kytkin">
+  <label for="valikko" class="valikko-nappi">Valikko</label>
+  <ul>
+      <li><a href="index.html">Etusivu</a></li>
+      <li><a href="joukkueet.html" aria-current="page">Joukkueet</a></li>
+      <li><a href="yhteystiedot.html">Yhteystiedot</a></li>
+  </ul>
+</nav>
+
+<main id="sisalto">
+  <!-- Murupolku: kertoo, missä ollaan. Viimeinen kohta ei ole linkki. -->
+  <nav aria-label="Murupolku" class="murupolku"><ol><li><a href="index.html">Etusivu</a></li><li aria-current="page">Joukkueet</li></ol></nav>
+
+
+  <h2>Joukkueet</h2>
+  <p class="kapea">Kauden 2026–2027 joukkueet. Harjoitukset Kuopion jäähallissa.</p>
+
+  <div class="kortit">
+    <article class="kortti">
+      <h3>U10</h3>
+      <p>Syntyneet 2016–2017. Harjoitukset ti ja to klo 17–18.</p>
+      <p><span class="tunniste">Aloittelijat</span></p>
+    </article>
+    <article class="kortti">
+      <h3>U13</h3>
+      <p>Syntyneet 2013–2015. Harjoitukset ma, ke ja pe klo 17.30–19.</p>
+      <p><span class="tunniste">Sarja</span></p>
+    </article>
+    <article class="kortti">
+      <h3>Edustus</h3>
+      <p>Kotiottelut lauantaisin klo 15. Ottelukalenteri päivittyy viikoittain.</p>
+      <p><span class="tunniste">II-divisioona</span></p>
+    </article>
+  </div>
+
+  <h2>Harjoitusajat</h2>
+  <div class="vieritys">
+    <table>
+      <thead><tr><th>Joukkue</th><th>Ma</th><th>Ti</th><th>Ke</th><th>To</th><th>Pe</th></tr></thead>
+      <tbody>
+        <tr><td>U10</td><td>–</td><td>17–18</td><td>–</td><td>17–18</td><td>–</td></tr>
+        <tr><td>U13</td><td>17.30–19</td><td>–</td><td>17.30–19</td><td>–</td><td>17.30–19</td></tr>
+        <tr><td>Edustus</td><td>19–20.30</td><td>–</td><td>19–20.30</td><td>19–20.30</td><td>–</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<!-- SAMA FOOTER JOKA SIVULLA -->
+<footer>
+  <div class="palstat">
+    <div>
+      <h2>Kuopion Kiekkokerho ry</h2>
+      <p>Kaartokatu 6<br>70110 Kuopio</p>
+    </div>
+    <div>
+      <h2>Sivut</h2>
+      <ul>
+        <li><a href="index.html">Etusivu</a></li>
+        <li><a href="joukkueet.html">Joukkueet</a></li>
+        <li><a href="yhteystiedot.html">Yhteystiedot</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Seuraa</h2>
+      <ul>
+        <li><a href="https://www.instagram.com/" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.facebook.com/" rel="noopener">Facebook</a></li>
+        <li><a href="mailto:info@esimerkki.fi">info@esimerkki.fi</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="pohja"><small>© 2026 Kuopion Kiekkokerho · Sakky CSS-perusteet · Esimerkki 18</small></p>
+</footer>
+</body>
+</html>

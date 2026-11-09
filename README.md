@@ -8,7 +8,8 @@ Opettajan mallirepo, jonka opiskelija forkkaa omaksi projektikseen (ohje Moodles
 index.html          etusivu, käyttää css/tyyli.css
 css/tyyli.css       perusmalli: järkevä oletus JOKAISELLE HTML-elementille, KOKEILE-kommentit (oppitunti 5)
 img/                kuvat (esimerkki 13 odottaa: icehockey.jpg, icehockey_tuupelaa.mp4)
-esimerkit/          00 kokeilusivu (kaikki elementit) + CSS-esimerkkisivut 01–17
+esimerkit/          00 kokeilusivu (kaikki elementit) + CSS-esimerkkisivut 01–20
+tehtavat/           tuntikohtaiset tehtäväohjeet (06-oma-sivusto.md)
 ```
 
 ## CSS-esimerkit (oppitunti 5)
@@ -35,6 +36,13 @@ Avaa `esimerkit/index.html`. Perusteet 01–08 seuraavat dioja, toteutusmallit 0
 | 15 | polut-ja-kansiot | suhteelliset polut kansiotasojen välillä: kaavio (img/polut-ja-kansiot.png), taulukko, yleiset virheet |
 | 16 | katoava-kortti | luentoesimerkki: kortti nousee, kääntyy ja katoaa klikatessa; label+checkbox+:has(:checked), @keyframes forwards, alta paljastuva pino-kortti, ei JS:ää |
 | 17 | erikokoiset-kortit | sama kolmen kortin rivi 7 kertaa, ainoa ero säiliön align-items (stretch / flex-start / center / flex-end), align-self, margin-top: auto, grid-vastine |
+| 18 | monisivuinen/ | oppitunti 6: kolme sivua, yhteinen header/nav/footer, hampurilaisvalikko (:has), murupolku, 3-palstainen footer, sivusto.css |
+| 19 | kuvagalleria | oppitunti 6: lightbox :target-pseudoluokalla, position: fixed, edellinen/seuraava |
+| 20 | valilehdet | oppitunti 6: välilehdet radio + :has(#id:checked) |
+
+## Tehtävät
+
+`tehtavat/06-oma-sivusto.md`: oppitunnin 6 tehtävät (3 sivua, valikko+footer, yksi komponentti, julkaisu, vertaisarviointi) ja arviointitaulukko.
 
 ## tyyli.css:n rakenne
 
@@ -42,7 +50,7 @@ Avaa `esimerkit/index.html`. Perusteet 01–08 seuraavat dioja, toteutusmallit 0
 
 ## Opiskelijalle
 
-1. Forkkaa tämä repo nimellä `kayttajanimi.github.io`.
+1. Forkkaa tämä repo nimellä `luentomateriaali` (ohje: Forkkaus selitettynä -dokumentti Moodlessa). Julkaise Settings → Pages → Branch main / (root); osoite on `https://kayttajanimi.github.io/luentomateriaali/`.
 2. Vaihda `index.html`:n title, h1 ja sisältö omaksi.
 3. Muokkaa `css/tyyli.css`:n `:root`-muuttujia: värit ja fontit vaihtuvat kerralla.
 4. Kopioi tarvitsemasi toteutusmalli `esimerkit/`-kansiosta omalle sivullesi.

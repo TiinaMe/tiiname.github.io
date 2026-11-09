@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yhteystiedot – Kuopion Kiekkokerho</title>
+  <meta name="description" content="Kuopion Kiekkokerhon yhteystiedot ja yhteydenottolomake.">
+  <!-- Kaksi tyylitiedostoa: ensin kurssin perusmalli, sitten tämän sivuston omat lisäykset -->
+  <link rel="stylesheet" href="../../css/tyyli.css">
+  <link rel="stylesheet" href="sivusto.css">
+</head>
+<body>
+<a class="ohita" href="#sisalto">Siirry sisältöön</a>
+
+<!-- SAMA HEADER JA NAV JOKA SIVULLA. Kun muutat, muuta kaikkiin kolmeen. -->
+<header>
+  <a href="index.html"><img src="../../img/sakky.jpg" alt="Kuopion Kiekkokerhon logo" width="64" height="64"></a>
+  <h1>Kuopion Kiekkokerho</h1>
+</header>
+<nav aria-label="Päävalikko">
+  <input type="checkbox" id="valikko" class="valikko-kytkin">
+  <label for="valikko" class="valikko-nappi">Valikko</label>
+  <ul>
+      <li><a href="index.html">Etusivu</a></li>
+      <li><a href="joukkueet.html">Joukkueet</a></li>
+      <li><a href="yhteystiedot.html" aria-current="page">Yhteystiedot</a></li>
+  </ul>
+</nav>
+
+<main id="sisalto">
+  <!-- Murupolku: kertoo, missä ollaan. Viimeinen kohta ei ole linkki. -->
+  <nav aria-label="Murupolku" class="murupolku"><ol><li><a href="index.html">Etusivu</a></li><li aria-current="page">Yhteystiedot</li></ol></nav>
+
+
+  <h2>Yhteystiedot</h2>
+  <p class="ilmoitus varoitus"><strong>Yksityisyys:</strong> tässä on <em>yhdistyksen</em> yleiset, kuvitteelliset yhteystiedot. Omalle sivullesi et laita omaa puhelinnumeroa tai sähköpostia, vaan linkit LinkedIn-, GitHub- tai some-profiiliin ja lomakkeen. Katso <code>tehtavat/06-oma-sivusto.md</code>, kohta Yksityisyys.</p>
+  <div class="kortit">
+    <div class="kortti">
+      <h3>Toimisto</h3>
+      <!-- Yhdistyksen yleiset tiedot. Henkilökohtaisella sivulla tämän kortin tilalle: some-linkit. -->
+      <address>
+        Kuopion Kiekkokerho ry<br>
+        Kaartokatu 6, 70110 Kuopio<br>
+        <a href="tel:+358401234567">040 123 4567</a> (toimisto)<br>
+        <a href="mailto:info@esimerkki.fi">info@esimerkki.fi</a>
+      </address>
+    </div>
+    <div class="kortti">
+      <h3>Seuraa meitä</h3>
+      <!-- Näin henkilökohtaisella CV-sivulla: ei numeroa, ei sähköpostia, vaan profiilit -->
+      <ul>
+        <li><a href="https://www.linkedin.com/" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://github.com/" rel="noopener">GitHub</a></li>
+        <li><a href="https://www.instagram.com/" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+    <div class="kortti">
+      <h3>Jäähalli kartalla</h3>
+      <iframe title="Kuopion jäähalli kartalla" width="100%" height="220" loading="lazy"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=27.66%2C62.89%2C27.70%2C62.91&amp;layer=mapnik"></iframe>
+    </div>
+  </div>
+
+  <h2>Ota yhteyttä</h2>
+  <form class="kaksi-palstaa" action="#" method="post">
+    <div>
+      <label for="nimi" class="pakollinen">Nimi</label>
+      <input id="nimi" name="nimi" type="text" required autocomplete="name">
+    </div>
+    <div>
+      <label for="email" class="pakollinen">Sähköposti</label>
+      <input id="email" name="email" type="email" required autocomplete="email">
+    </div>
+    <div class="koko-rivi">
+      <label for="viesti" class="pakollinen">Viesti</label>
+      <textarea id="viesti" name="viesti" rows="5" required></textarea>
+    </div>
+    <div class="koko-rivi">
+      <button type="submit">Lähetä</button>
+      <button type="reset" class="toissijainen">Tyhjennä</button>
+    </div>
+  </form>
+  <p class="ilmoitus varoitus">Lomake ei vielä lähetä mitään: <code>action="#"</code>. Oppitunnilla 7 kytketään oikea vastaanottaja.</p>
+
+</main>
+
+<!-- SAMA FOOTER JOKA SIVULLA -->
+<footer>
+  <div class="palstat">
+    <div>
+      <h2>Kuopion Kiekkokerho ry</h2>
+      <p>Kaartokatu 6<br>70110 Kuopio</p>
+    </div>
+    <div>
+      <h2>Sivut</h2>
+      <ul>
+        <li><a href="index.html">Etusivu</a></li>
+        <li><a href="joukkueet.html">Joukkueet</a></li>
+        <li><a href="yhteystiedot.html">Yhteystiedot</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Seuraa</h2>
+      <ul>
+        <li><a href="https://www.instagram.com/" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.facebook.com/" rel="noopener">Facebook</a></li>
+        <li><a href="mailto:info@esimerkki.fi">info@esimerkki.fi</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="pohja"><small>© 2026 Kuopion Kiekkokerho · Sakky CSS-perusteet · Esimerkki 18</small></p>
+</footer>
+</body>
+</html>

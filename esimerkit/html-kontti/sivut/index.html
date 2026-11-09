@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oma sivu kontissa</title>
+  <link rel="stylesheet" href="tyyli.css">
+</head>
+<body>
+  <header>
+    <h1>Hei kontista!</h1>
+    <p>Tämän sivun tarjoilee nginx-palvelin, joka pyörii Docker-kontissa.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Miten tämä toimii</h2>
+      <ol>
+        <li>Kansion <code>sivut/</code> tiedostot kopioidaan konttiin hakemistoon <code>/usr/share/nginx/html</code>.</li>
+        <li>nginx kuuntelee kontin sisällä porttia <strong>80</strong>.</li>
+        <li>Koneesi portti <strong>8080</strong> ohjataan kontin porttiin 80 (<code>-p 8080:80</code>).</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Kokeile</h2>
+      <p>Muokkaa tätä tiedostoa, rakenna image uudelleen ja päivitä selain. Tai käytä bind mountia (ks. README), jolloin muutos näkyy heti ilman buildia.</p>
+      <p><a href="toinen.html">Toinen sivu →</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <small>Käyttöjärjestelmät ja tietoteknisten laitteiden perusteet · Sakky</small>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>19 · Kuvagalleria ja lightbox ilman JavaScriptiä</title>
+  <link rel="stylesheet" href="../css/tyyli.css">
+  <style>
+    /* ============================================================
+       TOTEUTUSMALLI: kuvagalleria + lightbox :target-pseudoluokalla
+       Idea: jokainen iso kuva on oma <figure id="kuva-1">. Pikkukuva on
+       linkki href="#kuva-1". Kun osoitteen perässä on #kuva-1, selain
+       antaa sille elementille :target-tilan, ja CSS näyttää sen koko
+       ruudun kokoisena. "Sulje"-linkki href="#galleria" vie targetin pois.
+       ============================================================ */
+
+    /* ---------- Pikkukuvaruudukko ---------- */
+    .galleria {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));   /* KOKEILE: auto-fit, 8rem */
+      gap: 0.75rem;
+    }
+    .galleria a {
+      display: block;
+      aspect-ratio: 4 / 3;            /* kaikki ruudut saman muotoisia */
+      overflow: hidden;
+      border-radius: var(--kulma);
+      box-shadow: var(--varjo);
+    }
+    .galleria img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--siirtyma);
+    }
+    .galleria a:hover img,
+    .galleria a:focus-visible img { transform: scale(1.06); }   /* pieni zoom vihjeeksi */
+    .galleria a::before, .galleria a::after { content: none; } /* ei linkki-ikoneita */
+
+    /* ---------- Lightbox ---------- */
+    .lightbox {
+      /* Oletus: piilossa. display: none poistaa sen myös näppäimistöltä ja ruudunlukijalta. */
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgb(0 0 0 / 85%);
+      margin: 0;
+      padding: 1rem;
+      place-items: center;
+      grid-template-rows: 1fr auto;
+    }
+    .lightbox:target { display: grid; }    /* <<<<< TÄMÄ on koko tempun ydin */
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: var(--kulma);
+      box-shadow: 0 10px 40px rgb(0 0 0 / 50%);
+      animation: ilmesty 250ms ease-out;
+    }
+    @keyframes ilmesty {
+      from { opacity: 0; transform: scale(0.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .lightbox figcaption {
+      color: #fff;
+      text-align: center;
+      margin-top: 0.75rem;
+    }
+
+    /* Ohjaimet: sulje, edellinen, seuraava. Kaikki tavallisia linkkejä. */
+    .lightbox .sulje, .lightbox .edellinen, .lightbox .seuraava {
+      position: absolute;
+      color: #fff;
+      text-decoration: none;
+      font-size: 2rem;
+      line-height: 1;
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      background: rgb(255 255 255 / 15%);
+    }
+    .lightbox .sulje    { top: 1rem; right: 1rem; }
+    .lightbox .edellinen { left: 1rem;  top: 50%; transform: translateY(-50%); }
+    .lightbox .seuraava  { right: 1rem; top: 50%; transform: translateY(-50%); }
+    .lightbox a:hover, .lightbox a:focus-visible { background: var(--vari-korostus); color: var(--vari-teksti); outline: none; }
+    .lightbox a::before, .lightbox a::after { content: none; }
+
+    /* Tumma tausta on myös linkki, joka sulkee */
+    .lightbox .tausta { position: absolute; inset: 0; z-index: -1; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lightbox img { animation: none; }
+      .galleria img { transition: none; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <a href="../index.html"><img src="../img/sakky.jpg" alt="Logo" width="64" height="64"></a>
+  <h1>19 · Kuvagalleria ja lightbox</h1>
+</header>
+<nav><ul>
+  <li><a href="../index.html">Etusivu</a></li>
+  <li><a href="index.html">CSS-esimerkit</a></li>
+</ul></nav>
+<main>
+  <p class="kapea">Klikkaa pikkukuvaa: se avautuu koko ruutuun. Katso osoiteriviä: perään tulee <code>#kuva-2</code>. Selaimen Takaisin-nappi sulkee kuvan, koska jokainen avaus on oma osoite. Ei riviäkään JavaScriptiä.</p>
+
+  <!-- Pikkukuvat. Kuvina sakky.jpg neljästi; vaihda omat kuvasi img/-kansioon. -->
+  <div class="galleria" id="galleria">
+    <a href="#kuva-1"><img src="../img/sakky.jpg" alt="Harjoitukset tiistaina" loading="lazy"></a>
+    <a href="#kuva-2"><img src="../img/sakky.jpg" alt="Kotiottelu lauantaina" loading="lazy"></a>
+    <a href="#kuva-3"><img src="../img/sakky.jpg" alt="Juniorileiri kesäkuussa" loading="lazy"></a>
+    <a href="#kuva-4"><img src="../img/sakky.jpg" alt="Kauden päätösjuhla" loading="lazy"></a>
+  </div>
+
+  <!-- Isot kuvat. Jokainen oma figure omalla id:llä. Järjestys: edellinen/seuraava viittaavat naapureihin. -->
+  <figure class="lightbox" id="kuva-1">
+    <a class="tausta" href="#galleria" aria-label="Sulje"></a>
+    <img src="../img/sakky.jpg" alt="Harjoitukset tiistaina">
+    <figcaption>1 / 4 · Harjoitukset tiistaina</figcaption>
+    <a class="sulje" href="#galleria" aria-label="Sulje">×</a>
+    <a class="edellinen" href="#kuva-4" aria-label="Edellinen">‹</a>
+    <a class="seuraava" href="#kuva-2" aria-label="Seuraava">›</a>
+  </figure>
+  <figure class="lightbox" id="kuva-2">
+    <a class="tausta" href="#galleria" aria-label="Sulje"></a>
+    <img src="../img/sakky.jpg" alt="Kotiottelu lauantaina">
+    <figcaption>2 / 4 · Kotiottelu lauantaina</figcaption>
+    <a class="sulje" href="#galleria" aria-label="Sulje">×</a>
+    <a class="edellinen" href="#kuva-1" aria-label="Edellinen">‹</a>
+    <a class="seuraava" href="#kuva-3" aria-label="Seuraava">›</a>
+  </figure>
+  <figure class="lightbox" id="kuva-3">
+    <a class="tausta" href="#galleria" aria-label="Sulje"></a>
+    <img src="../img/sakky.jpg" alt="Juniorileiri kesäkuussa">
+    <figcaption>3 / 4 · Juniorileiri kesäkuussa</figcaption>
+    <a class="sulje" href="#galleria" aria-label="Sulje">×</a>
+    <a class="edellinen" href="#kuva-2" aria-label="Edellinen">‹</a>
+    <a class="seuraava" href="#kuva-4" aria-label="Seuraava">›</a>
+  </figure>
+  <figure class="lightbox" id="kuva-4">
+    <a class="tausta" href="#galleria" aria-label="Sulje"></a>
+    <img src="../img/sakky.jpg" alt="Kauden päätösjuhla">
+    <figcaption>4 / 4 · Kauden päätösjuhla</figcaption>
+    <a class="sulje" href="#galleria" aria-label="Sulje">×</a>
+    <a class="edellinen" href="#kuva-3" aria-label="Edellinen">‹</a>
+    <a class="seuraava" href="#kuva-1" aria-label="Seuraava">›</a>
+  </figure>
+
+  <h2>Miten tämä toimii</h2>
+  <ol>
+    <li><code>&lt;a href="#kuva-2"&gt;</code> on tavallinen ankkurilinkki. Klikkaus muuttaa osoitteen loppuosan (fragmentin).</li>
+    <li>Elementti, jonka <code>id</code> vastaa fragmenttia, saa <code>:target</code>-pseudoluokan. <code>.lightbox:target { display: grid }</code> näyttää sen.</li>
+    <li><code>position: fixed; inset: 0</code> peittää koko näkymän. <code>z-index: 100</code> nostaa sen navin (10) yläpuolelle.</li>
+    <li>Sulje-, edellinen- ja seuraava-painikkeet ovat linkkejä toisiin fragmentteihin. Takaisin-nappi toimii, koska selain muistaa fragmentit historiassa.</li>
+    <li>Näppäimistö: Tab siirtyy pikkukuvasta toiseen, Enter avaa, Tab lightboxin sisällä löytää Sulje-linkin.</li>
+  </ol>
+
+  <h2>Rajat ja JavaScript-kurssin jatko</h2>
+  <ul>
+    <li>Esc-näppäin ei sulje: CSS ei kuule näppäimiä. JS:llä <code>keydown</code> + <code>location.hash = ""</code>.</li>
+    <li>Isot kuvat ladataan sivun mukana, vaikka niitä ei avattaisi. Neljällä kuvalla ei haittaa, neljälläkymmenellä haittaa. JS lataa tarvittaessa.</li>
+    <li>Sivu hyppää ankkuriin, jos lightbox ei olisi <code>fixed</code>. Nyt ei hyppää, koska fixed-elementillä ei ole paikkaa virrassa.</li>
+  </ul>
+
+  <h2>Kokeile</h2>
+  <ul>
+    <li>Vaihda <code>display: none</code> → <code>opacity: 0; pointer-events: none</code> ja <code>:target</code>iin <code>opacity: 1</code> + <code>transition</code>. Pehmeä häivytys, mutta mitä tapahtuu Tab-näppäimelle?</li>
+    <li>Lisää viides kuva. Montako kohtaa HTML:ssä pitää muuttaa? (Vastaus: pikkukuva, uusi figure ja kahden naapurin edellinen/seuraava-linkit.)</li>
+    <li>Poista <code>aspect-ratio</code> pikkukuvista ja katso, mitä eri kokoisille kuville tapahtuu.</li>
+  </ul>
+
+  <p><a href="index.html">← Kaikki esimerkit</a></p>
+</main>
+<footer><div class="alatunniste-tiedot"><p><small>Sakky · CSS-perusteet · Esimerkki 19</small></p></div></footer>
+</body>
+</html>

@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .                 # rakentaa imagen Dockerfilestä
+    ports:
+      - "8080:80"            # koneen portti 8080 -> kontin portti 80
+    # Kehitysvaihtoehto: liitä kansio suoraan konttiin, jolloin
+    # muokkaukset näkyvät heti ilman uutta buildia:
+    # volumes:
+    #   - ./sivut:/usr/share/nginx/html:ro

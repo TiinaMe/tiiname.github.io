@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Etusivu – Kuopion Kiekkokerho</title>
+  <meta name="description" content="Kuopion Kiekkokerho: juniorijääkiekkoa Kuopiossa. Esimerkki monisivuisesta sivustosta.">
+  <!-- Kaksi tyylitiedostoa: ensin kurssin perusmalli, sitten tämän sivuston omat lisäykset -->
+  <link rel="stylesheet" href="../../css/tyyli.css">
+  <link rel="stylesheet" href="sivusto.css">
+</head>
+<body>
+<a class="ohita" href="#sisalto">Siirry sisältöön</a>
+
+<!-- SAMA HEADER JA NAV JOKA SIVULLA. Kun muutat, muuta kaikkiin kolmeen. -->
+<header>
+  <a href="index.html"><img src="../../img/sakky.jpg" alt="Kuopion Kiekkokerhon logo" width="64" height="64"></a>
+  <h1>Kuopion Kiekkokerho</h1>
+</header>
+<nav aria-label="Päävalikko">
+  <input type="checkbox" id="valikko" class="valikko-kytkin">
+  <label for="valikko" class="valikko-nappi">Valikko</label>
+  <ul>
+      <li><a href="index.html" aria-current="page">Etusivu</a></li>
+      <li><a href="joukkueet.html">Joukkueet</a></li>
+      <li><a href="yhteystiedot.html">Yhteystiedot</a></li>
+  </ul>
+</nav>
+
+<main id="sisalto">
+
+  <div class="hero-pieni">
+    <h2>Jääkiekkoa junioreille Kuopiossa</h2>
+    <p>Kolme sivua, yksi header, yksi nav, yksi footer. Kavenna ikkunaa alle 640 px: valikko muuttuu napiksi. Ei JavaScriptiä.</p>
+    <a class="nappi korostus" href="joukkueet.html">Katso joukkueet</a>
+  </div>
+
+  <h2>Mitä tässä esimerkissä on</h2>
+  <div class="kortit">
+    <div class="kortti">
+      <h3>Hampurilaisvalikko</h3>
+      <p>Piilotettu checkbox + label. <code>nav:has(:checked) ul</code> näyttää listan. Toimii vain kapealla ruudulla: media query hoitaa vaihdon.</p>
+    </div>
+    <div class="kortti">
+      <h3>Murupolku</h3>
+      <p>Alasivuilla <code>nav aria-label="Murupolku"</code> + numeroitu lista. Erottimet tulevat <code>li + li::before</code> -säännöllä, ei HTML:stä.</p>
+    </div>
+    <div class="kortti">
+      <h3>Footer kolmella palstalla</h3>
+      <p><code>grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr))</code>: kolme palstaa leveällä, yksi kapealla, ei media querya.</p>
+    </div>
+  </div>
+
+  <h2>Näin kopioit tämän omaan projektiisi</h2>
+  <ol>
+    <li>Kopioi <code>sivusto.css</code> repon juureen kansioon <code>css/</code> ja linkitä se <code>tyyli.css</code>:n jälkeen.</li>
+    <li>Kopioi <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code> ja <code>&lt;footer&gt;</code> tältä sivulta omiin sivuihisi. Korjaa polut: juuressa <code>css/tyyli.css</code> ja <code>img/…</code>, ei <code>../../</code>.</li>
+    <li>Vaihda <code>aria-current="page"</code> sille linkille, joka on kyseinen sivu.</li>
+    <li>Lisää murupolku alasivuille, ei etusivulle.</li>
+  </ol>
+  <p class="ilmoitus info">Sama header kolmessa tiedostossa tuntuu toistolta. Se on tarkoitus: JavaScript-kurssilla opit, miten yhteiset osat ladataan yhdestä paikasta.</p>
+
+</main>
+
+<!-- SAMA FOOTER JOKA SIVULLA -->
+<footer>
+  <div class="palstat">
+    <div>
+      <h2>Kuopion Kiekkokerho ry</h2>
+      <p>Kaartokatu 6<br>70110 Kuopio</p>
+    </div>
+    <div>
+      <h2>Sivut</h2>
+      <ul>
+        <li><a href="index.html">Etusivu</a></li>
+        <li><a href="joukkueet.html">Joukkueet</a></li>
+        <li><a href="yhteystiedot.html">Yhteystiedot</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Seuraa</h2>
+      <ul>
+        <li><a href="https://www.instagram.com/" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.facebook.com/" rel="noopener">Facebook</a></li>
+        <li><a href="mailto:info@esimerkki.fi">info@esimerkki.fi</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="pohja"><small>© 2026 Kuopion Kiekkokerho · Sakky CSS-perusteet · Esimerkki 18</small></p>
+</footer>
+</body>
+</html>

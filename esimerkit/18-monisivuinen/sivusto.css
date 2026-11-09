@@ -1,0 +1,129 @@
+/* ============================================================
+   18 · MONISIVUINEN SIVUSTO – sivuston omat lisäykset tyyli.css:n päälle
+   Ladataan tyyli.css:n JÄLKEEN, joten nämä säännöt voittavat sen.
+   Kolme komponenttia: hampurilaisvalikko, murupolku, kolmipalstainen footer.
+   ============================================================ */
+
+
+/* ---------- 1. HAMPURILAISVALIKKO ILMAN JAVASCRIPTIÄ ----------
+   Rakenne HTML:ssä:
+     <nav>
+       <input type="checkbox" id="valikko" class="valikko-kytkin">
+       <label for="valikko" class="valikko-nappi">☰ Valikko</label>
+       <ul>…</ul>
+     </nav>
+   Leveällä ruudulla nappi on piilossa ja lista näkyy aina.
+   Kapealla lista on piilossa, kunnes checkbox on ruksattu.        */
+
+.valikko-kytkin {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.valikko-nappi {
+  display: none;                 /* leveällä: ei nappia */
+  padding: 0.6rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Kapea ruutu: mobile first -ajattelussa tämä olisi oletus, mutta koska
+   tyyli.css:n nav on jo valmiiksi leveän ruudun rivi, käännetään se tässä. */
+@media (max-width: 40em) {
+  .valikko-nappi { display: block; }
+
+  nav ul {
+    display: none;               /* piilossa oletuksena */
+    flex-direction: column;      /* kun näkyy: pystylista */
+    gap: 0;
+    padding-bottom: 0.5rem;
+  }
+
+  /* "nav, jonka sisällä on ruksattu kytkin" → näytä lista */
+  nav:has(.valikko-kytkin:checked) ul { display: flex; }
+
+  /* Nappi kertoo tilan: ☰ → ✕ */
+  nav:has(.valikko-kytkin:checked) .valikko-nappi::before { content: "✕ "; }
+  nav:not(:has(.valikko-kytkin:checked)) .valikko-nappi::before { content: "☰ "; }
+}
+
+/* Näppäimistö: kun piilotettu checkbox saa fokuksen, korosta nappi */
+.valikko-kytkin:focus-visible + .valikko-nappi {
+  outline: 3px solid var(--vari-teksti);
+  outline-offset: -3px;
+}
+
+
+/* ---------- 2. MURUPOLKU ----------
+   <nav aria-label="Murupolku" class="murupolku">
+     <ol><li><a href="index.html">Etusivu</a></li><li>Joukkueet</li></ol>
+   </nav>
+   Erottimet tehdään ::before-pseudoelementillä, ei HTML:ään kirjoitetuilla
+   ">"-merkeillä. Viimeinen kohta on nykyinen sivu, ei linkki.              */
+
+.murupolku {
+  background: none;              /* kumoaa tyyli.css:n nav-taustan */
+  position: static;              /* ei sticky */
+  padding-inline: 0;
+  font-size: 0.9rem;
+  margin-bottom: var(--vali);
+}
+.murupolku ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+}
+.murupolku li { margin: 0; color: var(--vari-teksti-2); }
+.murupolku li + li::before {
+  content: "›";                  /* KOKEILE: "/" tai "→" */
+  margin-inline: 0.25rem 0.5rem;
+  color: var(--vari-viiva);
+}
+.murupolku a {
+  display: inline;               /* kumoaa tyyli.css:n nav a { display: block } */
+  padding: 0;
+  font-weight: 400;
+  color: var(--vari-paa);
+  text-decoration: underline;
+}
+.murupolku a:hover { background: none; color: var(--vari-paa-tumma); }
+.murupolku [aria-current="page"] { font-weight: 600; color: var(--vari-teksti); }
+
+
+/* ---------- 3. KOLMIPALSTAINEN FOOTER ----------
+   <footer><div class="palstat"><div>…</div><div>…</div><div>…</div></div>
+           <p class="pohja"><small>©</small></p></footer>
+   Grid: leveällä kolme palstaa, kapealla yksi (auto-fit + minmax).        */
+
+body > footer .palstat {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));   /* KOKEILE: 10rem */
+  gap: calc(var(--vali) * 1.5);
+  padding-bottom: var(--vali);
+  border-bottom: 1px solid rgb(255 255 255 / 15%);
+}
+body > footer h2 {
+  font-size: 1rem;
+  color: var(--vari-korostus);
+  margin: 0 0 0.5rem;
+}
+body > footer ul { list-style: none; margin: 0; padding: 0; }
+body > footer li { margin: 0 0 0.25rem; }
+body > footer .pohja { margin: var(--vali) 0 0; text-align: center; color: var(--vari-teksti-2); }
+
+
+/* ---------- 4. PIENET SIVUSTOKOHTAISET SÄÄDÖT ---------- */
+.hero-pieni {
+  background: linear-gradient(135deg, var(--vari-paa), var(--vari-paa-tumma));
+  color: var(--vari-pinta);
+  padding: calc(var(--vali) * 2);
+  border-radius: var(--kulma);
+  margin-bottom: calc(var(--vali) * 1.5);
+}
+.hero-pieni h2 { color: inherit; margin-top: 0; }
