@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>21 · Liukuväri kuvan päällä</title>
+  <style>
+    /* Vain tämän esimerkin säännöt. Ei tyyli.css:ää. */
+
+    body { margin: 0; font-family: Arial, sans-serif; background: #222; color: #fff; }
+
+    /* 1. Säiliö: kuva ja liukuväri pinotaan tämän sisään */
+    .kuva-alue {
+      position: relative;        /* ::after asemoidaan tämän mukaan */
+      max-width: 900px;
+      margin: 40px auto;
+    }
+
+    /* 2. Kuva täyttää säiliön leveyden, näkyy kokonaan */
+    .kuva-alue img {
+      display: block;            /* ei rakoa kuvan alle */
+      width: 100%;
+      height: auto;
+    }
+
+    /* 3. Liukuväri: erillinen kerros kuvan päällä
+       to top  = alkaa alareunasta ja kulkee ylöspäin
+       1. väri = violetti täysin peittävänä alareunassa
+       2. väri = sama violetti täysin läpinäkyvänä yläreunassa      */
+    .kuva-alue::after {
+      content: "";
+      position: absolute;
+      inset: 0;                  /* peittää koko kuvan alueen */
+      background: linear-gradient(
+        to top,
+        rgba(110, 40, 160, 1) 0%,     /* alareuna: violetti 100 % */
+        rgba(110, 40, 160, 0) 100%    /* yläreuna: violetti 0 % = näkymätön */
+      );
+      pointer-events: none;      /* kerros ei estä kuvan klikkaamista */
+    }
+
+    /* 4. Teksti liukuvärin päälle (valinnainen) */
+    .kuva-alue h1 {
+      position: absolute;
+      left: 24px;
+      bottom: 24px;
+      margin: 0;
+      z-index: 1;                /* ::after on 0, teksti sen päälle */
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    .ohje { max-width: 900px; margin: 0 auto 40px; padding: 0 16px; line-height: 1.6; }
+    code { background: #444; padding: 1px 5px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<div class="kuva-alue">
+  <img src="../img/sakky.jpg" alt="Esimerkkikuva">
+  <h1>Violetti liukuväri alhaalta ylös</h1>
+</div>
+
+<div class="ohje">
+  <p>Kuva näkyy kokonaan. Sen päällä on <code>::after</code>-kerros, jonka tausta on
+  <code>linear-gradient(to top, violetti 100 %, violetti 0 %)</code>. Alareunassa väri peittää, yläreunassa se on
+  täysin läpinäkyvä, ja välissä se liukuu tasaisesti.</p>
+
+  <p><strong>Kokeile</strong> (F12 → Elements → valitse <code>.kuva-alue</code> → ::after):</p>
+  <ul>
+    <li><code>rgba(110, 40, 160, 0) 100%</code> → <code>60%</code>: liukuma loppuu jo 60 %:n korkeudella, ylin 40 % on puhdasta kuvaa.</li>
+    <li><code>to top</code> → <code>to bottom</code>, <code>to right</code>, <code>160deg</code>.</li>
+    <li>Loppuvärin <code>rgba(110, 40, 160, 0)</code> → <code>transparent</code>: sama asia lyhyemmin.</li>
+    <li>Alkuvärin 1 → 0.7: kuva kuultaa läpi myös alareunassa.</li>
+    <li>Lisää kolmas pysäytys keskelle: <code>rgba(110, 40, 160, 0.5) 50%</code>.</li>
+  </ul>
+</div>
+
+</body>
+</html>
